@@ -19,10 +19,14 @@ class Perangkat extends CI_Controller
 
     public function index()
     {
+        $data = array(
+            'table_url' => base_url('perangkat/ajax_list'),
+        );
+
         $this->load->view('admin/themes/header');
         $this->load->view('admin/themes/nav');
         $this->load->view('admin/themes/sidebar');
-        $this->load->view('perangkat/index');
+        $this->load->view('perangkat/index', $data);
         $this->load->view('admin/themes/footer');
     }
 

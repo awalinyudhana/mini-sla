@@ -32,9 +32,10 @@
 <!-- Core Scripts - Include with every page -->
 <script type="text/javascript">
 var table;
- 
+var datatable_url;
 $(document).ready(function() {
- 
+    
+    datatable_url = $("#datatable").data('url');
     //datatables
     table = $('#datatable').DataTable({ 
  
@@ -44,7 +45,7 @@ $(document).ready(function() {
  
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo site_url('perangkat/ajax_list')?>",
+            "url": datatable_url,
             "type": "POST"
         },
  
