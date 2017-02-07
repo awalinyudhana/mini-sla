@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> Data Perangkat</h1>
+            <h1 class="page-header"> Data Customer</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Daftar Data Perangkat
+                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Daftar Data Customer
                 </div>
 
                 <div class="panel-body">
@@ -24,18 +24,21 @@
                             } ?>
 
                             <p align="right">
-                                <?php echo anchor('perangkat/create', 'Tambah Perangkat Baru', "class='btn btn-success'") ?>
+                                <?php echo anchor('customer/create', 'Tambah Customer Baru', "class='btn btn-success'") ?>
                             </p>
 
                             <table cellpadding=0 cellspacing=10 class="table" id="datatable" data-url="<?php echo $table_url; ?>">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Part Number</th>
-                                        <th>Brand</th>
-                                        <th>Nama Perangkat</th>
-                                        <th>Type</th>
-                                        <th>Status</th>
+                                        <th>Nama Customer</th>
+                                        <th>Alamat</th>
+                                        <th>Kota</th>
+                                        <th>Provinsi</th>
+                                        <th>Kode Pos</th>
+                                        <th>PIC</th>
+                                        <th>Kontak</th>
+                                        <th>Email</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

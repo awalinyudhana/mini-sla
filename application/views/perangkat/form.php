@@ -35,28 +35,28 @@
                             ?>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Part Number:</label>
+                                <label class="col-sm-2 control-label">Part Number</label>
                                 <div class="col-sm-6">
                                     <input name="part_number" <?php if ($mode == 'update') echo "value='$part_number'" ?>type="text" class='form-control'>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Brand:</label>
+                                <label class="col-sm-2 control-label">Brand</label>
                                 <div class="col-sm-6">
                                     <input name="brand" <?php if ($mode == 'update') echo "value='$brand'" ?>type="text" class='form-control'>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Nama Perangkat:</label>
+                                <label class="col-sm-2 control-label">Nama Perangkat</label>
                                 <div class="col-sm-6">
                                     <input name="nama_perangkat" <?php if ($mode == 'update') echo "value='$nama_perangkat'" ?>type="text" class='form-control'>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Type:</label>
+                                <label class="col-sm-2 control-label">Type</label>
                                 <div class="col-sm-6">
                                     <select name="type">
                                         <option value="Hardware" <?php  if ($mode == 'update' && $type == 'Hardware') echo "selected" ?>>Hardware</option>
@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Status:</label>
+                                <label class="col-sm-2 control-label">Status</label>
                                 <div class="col-sm-6">
                                     <select name="status">
                                         <option value="Active" <?php  if ($mode == 'update' && $status == 'Active') echo "selected" ?>>Active</option>
