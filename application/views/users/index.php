@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Daftar Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Daftar Pengguna Sistem
                 </div>
 
                 <div class="panel-body">
@@ -65,7 +65,7 @@
                                                             'UTF-8'); ?>
                                                     </span>
                                                 <?php else: ?>
-                                                    <a href="<?php echo site_url("group-edit/$group->id") ?>"
+                                                    <a href="<?php echo site_url("users/edit_group/$group->id") ?>"
                                                        class="btn btn-default center-block">
                                                         <?php echo htmlspecialchars(
                                                             $group->name,
@@ -77,15 +77,12 @@
                                         </td>
                                         <td>
                                             <?php if (in_array(
-                                                $this->config->item('admin_group', 'ion_auth'), $groups)
-                                            ) : ?>
+                                                    $this->config->item('admin_group', 'ion_auth'), $groups)) : ?>
                                                 <?php echo ($user->active) ? anchor(
-                                                    "users/deactivate/" . $user->id , "Aktifkan", "class='btn btn-info'"
-                                                ) :
+                                                    "users/deactivate/" . $user->id , "Aktifkan", "class='btn btn-info'") :
                                                     anchor("users/activate/" . $user->id , "Non Aktifkan");
                                                 ?>
                                             <?php endif; ?>
-
                                         </td>
                                         <td>
                                             <?php

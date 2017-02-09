@@ -5,22 +5,14 @@
                 <a href="<?php echo base_url() ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 <ul class="nav nav-second-level">
 
-<!--                    --><?php //if ($this->ion_auth->in_group(['superadmin'])) {?>
-<!--                        <li>-->
-<!--                            <a href="--><?php //echo base_url('voting-result')?><!--">-->
-<!--                                <i class="fa fa-bar-chart-o fa-fw"></i> Hasil Pemilihan</a>-->
-<!--                        </li>-->
-<!--                    --><?php //} ?>
 
-                    <?php if ($this->ion_auth->in_group(['superadmin'])) {?>
-                        <li>
-                            <a href="<?php echo base_url('voting-result')?>">
-                                <i class="fa fa-bar-chart-o fa-fw"></i> Hasil Pemilihan</a>
-                        </li>
-                    <?php } ?>
                     <li>
-                        <a href="<?php echo base_url('voter-percentage')?>">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Prosentase Pemilih</a>
+                        <a href="<?php echo base_url('groups')?>">
+                            <i class="fa fa-bar-chart-o fa-fw"></i>Groups</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo base_url('users')?>">
+                            <i class="fa fa-bar-chart-o fa-fw"></i>Users</a>
                     </li>
 <!--                    <li>-->
 <!--                        <a href="--><?php //echo base_url('booth-monitoring')?><!--">-->
@@ -36,9 +28,6 @@
                         <li>
                             <a href="<?php echo base_url('users')?>">Users</a>
                         </li>
-<!--                        <li>-->
-<!--                            <a href="--><?php //echo base_url('groups')?><!--"> Groups</a>-->
-<!--                        </li>-->
                         <li>
                             <a href="<?php echo base_url('event')?>"> Event</a>
                         </li>
