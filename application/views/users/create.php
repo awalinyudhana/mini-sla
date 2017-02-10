@@ -38,15 +38,8 @@
                             </p>
                             <?php echo form_open('users/create', ['class' => 'form-horizontal']); ?>
 
-                            <?php //if($identity_column!=='email') { ?>
                             <div class="form-group">
-                                <label for="nip" class="col-sm-2 control-label">nip</label>
-                                <div class="col-sm-6">
-                                    <input name="nip" value="<?php echo $nip['value'] ;?>" id="nip" type="text" class='form-control'>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="username" class="col-sm-2 control-label">Username:</label>
+                                <label for="username" class="col-sm-2 control-label">Nip:</label>
                                 <div class="col-sm-6">
                                     <input name="username" value="<?php echo $username['value'] ;?>" id="username" type="text" class='form-control'>
                                 </div>
@@ -71,20 +64,6 @@
                                     <input name="email" value="<?php echo $email['value'] ;?>" id="email" type="text" class='form-control'>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="label_grup_name" class="col-sm-2 control-label">Grup</label>
-                                <div class="col-sm-6">
-                                    <select name="group_id" id="select-group-id" required>
-                                        <option value="disabled selected">Pilih Grup</option>;
-                                        <?php foreach ($groups_name as $row_group_name) : ?>
-                                        <option value="<?php echo $row_group_name->id ; ?>"> <?php echo $row_group_name->name;   ?></option>
-                                        <?php endforeach;?>
-                                    </select>
-                                    <p><?php //echo print_r($groups_name) ?></p>
-                                </div>
-                            </div>
-
-
                             <div class="form-group">
                                 <label for="password" class="col-sm-2 control-label">Password</label>
                                 <div class="col-sm-6">

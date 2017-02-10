@@ -22,13 +22,13 @@
                                 <?php
                             } ?>
 
-                            <p align="right"><?php echo anchor('groups/create', 'create', "class='btn btn-default'", lang('index_create_group_link'), "class='btn btn-success'") ?></p>
+                            <p align="right"><?php echo anchor('groups/create', 'Tambah Group', "class='btn btn-success'") ?></p>
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th><?php echo lang('index_action_th'); ?></th>
+                                    <th>Nama Group</th>
+                                    <th>Deskripsi</th>
+                                    <th>Aksi</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -38,7 +38,7 @@
                                         <td><?php echo htmlspecialchars($group->description, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
                                             <?php echo anchor("groups/edit/" . $group->id, 'Edit', "class='btn btn-warning'"); ?>
-                                            <?php echo anchor("groups/delete/" . $group->id, 'Delete', "class='btn btn-danger'"); ?>
+<!--                                            --><?php //echo anchor("groups/delete/" . $group->id, 'Delete', "class='btn btn-danger'"); ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

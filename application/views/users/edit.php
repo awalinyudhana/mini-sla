@@ -38,17 +38,10 @@
 
                             <?php echo form_open(uri_string(), ['class' => 'form-horizontal']); ?>
                             <div class="form-group">
-                                <label for="nip" class="col-sm-2 control-label">nip</label>
-                                <div class="col-sm-6">
-                                    <input name="nip" value="<?php echo $nip['value']; ?>" id="nip" type="text"
-                                           class='form-control'>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="username" class="col-sm-2 control-label">Username:</label>
+                                <label for="username" class="col-sm-2 control-label">Nip:</label>
                                 <div class="col-sm-6">
                                     <input name="username" value="<?php echo $username['value']; ?>" id="username"
-                                           type="text" class='form-control'>
+                                           type="text" class='form-control' disabled>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -75,37 +68,50 @@
                                     <input name="email" value="<?php echo $email['value']; ?>" id="email" type="text"
                                            class='form-control'>
                                 </div>
-                            </div><div class="form-group">
-                                <label for="Groups" class="col-sm-2 control-label">Group</label>
-                                <div class="col-sm-8">
-                                    <?php if ($this->ion_auth->is_admin()): ?>
-                                        <?php echo lang('edit_user_groups_heading', 'Groups', "class='col-sm-4 control-label'"); ?>
-                                        <div class="col-sm-10">
-                                            <?php foreach ($groups as $group): ?>
-                                                <?php
-                                                $gID = $group['id'];
-                                                $checked = null;
-                                                $item = null;
-                                                foreach ($currentGroups as $grp) {
-                                                    if ($gID == $grp->id) {
-                                                        $checked = ' checked="checked"';
-                                                        break;
-                                                    }
-                                                }
-                                                ?>
-                                                <?php if ($this->config->item('admin_group', 'ion_auth') != $group['name']) : ?>
+                            </div>
 
-                                                    <label class="btn btn-default">
-                                                        <input type="checkbox" name="groups[]"
-                                                               value="<?php echo $group['id']; ?>"<?php echo $checked; ?>>
-                                                        <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
-                                                    </label>
-                                                <?php endif; ?>
-                                            <?php endforeach ?>
-                                        </div>
-                                    <?php endif ?>
+                            <?php if ($this->ion_auth->is_admin()): ?>
+                            <div class="form-group">
+                                <label for="Groups" class="col-sm-2 control-label">Group</label>
+                                <div class="col-sm-10">
+                                    <?php
+
+                                    echo $this->config->item('admin_group');
+                                    foreach ($groups as $group): ?>
+                                        <?php
+                                        $gID = $group['id'];
+                                        $current_groups = null;
+                                        $checked = null;
+                                        $item = null;
+                                        foreach ($currentGroups as $grp) {
+                                            $current_groups = $grp->name;
+                                            if ($gID == $grp->id) {
+                                                $checked = ' checked="checked"';
+                                                break;
+                                            }
+
+                                        }
+
+                                        ?>
+                                        <?php if ( $this->config->item('admin_group', 'ion_auth') != $current_groups) : ?>
+                                            <?php if ($this->config->item('admin_group', 'ion_auth') != $group['name']) : ?>
+                                                <label class="btn btn-default">
+                                                    <input type="checkbox" name="groups[]"
+                                                           value="<?php echo $group['id']; ?>"<?php echo $checked; ?>>
+                                                    <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
+                                                </label>
+                                            <?php
+                                            endif;
+                                        endif; ?>
+                                    <?php endforeach ?>
+                                    <?php if ( $this->config->item('admin_group', 'ion_auth') == $current_groups) :
+                                        echo "Administrator";
+                                    endif; ?>
+
                                 </div>
                             </div>
+
+                            <?php endif ?>
 
                             <div class="form-group">
                                 <label for="password" class="col-sm-2 control-label">Password</label>

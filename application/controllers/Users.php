@@ -55,12 +55,10 @@ class Users extends CI_Controller
         //$group_id = $_POST['group_name'];
 
         // validate form input
-        $this->form_validation->set_rules('nip', 'Nomor Induk Pegawai', 'required');
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
-        $this->form_validation->set_rules('username', 'Username', 'required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
+        $this->form_validation->set_rules('username', 'Nip', 'required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
         $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
-        $this->form_validation->set_rules('group_id', 'Group Name', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
         $this->form_validation->set_rules('password_confirm', 'Password Confirm', 'required');
 
@@ -68,7 +66,6 @@ class Users extends CI_Controller
             $email = strtolower($this->input->post('email'));
             $identity = ($identity_column === 'email') ? $email : $this->input->post('username');
             $password = $this->input->post('password');
-            $group_id = array($this->input->post('group_id'));
 
             $additional_data = array(
                 'nip' => $this->input->post('nip'),
@@ -80,7 +77,7 @@ class Users extends CI_Controller
             );
         }
         if ($this->form_validation->run() == true && $this->ion_auth->register(
-                $identity, $password, $email, $additional_data, $group_id)
+                $identity, $password, $email, $additional_data)
         ) {
             // check to see if we are creating the user
             // redirect them back to the admin page
@@ -178,13 +175,9 @@ class Users extends CI_Controller
         $currentGroups = $this->ion_auth->get_users_groups($id)->result();
 
         // validate form input
-        $this->form_validation->set_rules('nip', 'Nomor Induk Pegawai', 'required');
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
-        $this->form_validation->set_rules('username', 'Username', 'required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
         $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-        $this->form_validation->set_rules('password_confirm', 'Password Confirm', 'required');
 
         if (isset($_POST) && !empty($_POST)) {
             // do we have a valid request?
@@ -202,7 +195,7 @@ class Users extends CI_Controller
             if ($this->form_validation->run() === TRUE) {
                 $data = array(
                     'nip' => $this->input->post('nip'),
-                    'username' => $this->input->post('username'),
+                    'username' => $user->username,
                     'first_name' => $this->input->post('first_name'),
                     'last_name' => $this->input->post('last_name'),
                     'email' => $this->input->post('email'),
@@ -266,13 +259,6 @@ class Users extends CI_Controller
         $this->data['user'] = $user;
         $this->data['groups'] = $groups;
         $this->data['currentGroups'] = $currentGroups;
-
-        $this->data['nip'] = array(
-            'name' => 'nip',
-            'id' => 'nip',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('nip', $user->nip),
-        );
 
         $this->data['username'] = array(
             'name' => 'identity',
