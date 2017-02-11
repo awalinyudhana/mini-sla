@@ -305,3 +305,15 @@ table.dataTable thead .sorting:after {
 .show-grid {
     margin: 15px 0;
 }
+
+table.boq-customer td {
+    padding: 2px 5px;
+}
+
+table.boq-customer td.title {
+    text-align: right;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}

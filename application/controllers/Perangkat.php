@@ -30,7 +30,7 @@ class Perangkat extends CI_Controller
         $this->load->view('admin/themes/footer');
     }
 
-    public function ajax_list()
+    public function ajax_list($type = null)
     {
         $list = $this->model->get_datatables();
         $data = array();
@@ -39,7 +39,13 @@ class Perangkat extends CI_Controller
         foreach ($list as $perangkat) {
             $no++;
             $row = array();
-            $action = '<a href="'.base_url('perangkat/update/'.$perangkat->perangkat_id).'" class="btn btn-warning">Update</a> <a href="javascript:;" data-href="'.base_url('perangkat/delete/'.$perangkat->perangkat_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Delete</a>';
+
+            if ($type == 'modal') {
+                $detail = json_encode($perangkat);
+                $action = "<a href='javascript:;' data-detail='$detail' class='btn btn-success pilih'>Pilih</a>";
+            } else {
+                $action = '<a href="'.base_url('perangkat/update/'.$perangkat->perangkat_id).'" class="btn btn-warning">Update</a> <a href="javascript:;" data-href="'.base_url('perangkat/delete/'.$perangkat->perangkat_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Delete</a>';
+            }
 
             $row[] = $no;
             $row[] = $perangkat->part_number;
