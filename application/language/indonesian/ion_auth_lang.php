@@ -88,3 +88,4 @@ $lang['email_forgot_password_link']					= 'Setel Ulang Kata Sandi';
 $lang['email_new_password_subject']					= 'Kata Sandi Baru';
 $lang['email_new_password_heading']					= 'Kata Sandi Baru Untuk %s';
 $lang['email_new_password_subheading']			    = 'Kata Sandi Telah Diubah Ke: %s';
+$lang['edit_group_name_label']			    = 'Kata Sandi Telah Diubah Ke: %s';

@@ -20,7 +20,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Daftar Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Daftar Pengguna Sistem
                 </div>
 
                 <div class="panel-body">
@@ -32,16 +32,19 @@
                             <p>Apakah anda ingin me-nonaktifkan user <?php echo $user->first_name.' '.$user->last_name ?> ? </p>
                             <?php echo form_open("users/deactivate/".$user->id);?>
                             <p>
-                                <?php echo lang('deactivate_confirm_y_label', 'confirm', "class='radio-inline'");?>
+                                <label for="confirm" class="radio-inline">Yes</label>
+                                <?php// echo lang('deactivate_confirm_y_label', 'confirm', "class='radio-inline'");?>
                                 <input type="radio" name="confirm" value="yes" checked="checked" class="radio-inline" />
-                                <?php echo lang('deactivate_confirm_n_label', 'confirm',  "class='radio-inline'");?>
+                                <label for="confirm" class="radio-inline">No</label>
+                                <?php //echo lang('deactivate_confirm_n_label', 'confirm',  "class='radio-inline'");?>
                                 <input type="radio" name="confirm" value="no" class="radio-inline"/>
                             </p>
                             <?php echo form_hidden($csrf); ?>
                             <?php echo form_hidden(array('id'=>$user->id)); ?>
 
                             <div class="col-sm-3">
-                                <p><?php echo form_submit('submit', lang('deactivate_submit_btn'), ['class' => 'btn btn-success pull-right']); ?></p>
+                                <input name="submit" value="Save" class="btn btn-success pull-right" type="submit">
+                                <p><?php //echo form_submit('submit', lang('deactivate_submit_btn'), ['class' => 'btn btn-success pull-right']); ?></p>
                             </div>
                             <?php echo form_close();?>
                         </div>

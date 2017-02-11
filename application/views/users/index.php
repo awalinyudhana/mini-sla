@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Daftar Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Daftar Pengguna Sistem
                 </div>
 
                 <div class="panel-body">
@@ -32,12 +32,12 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nip</th>
-                                    <th>Username</th>
                                     <th>Nama Depan</th>
                                     <th>Nama Belakang</th>
+                                    <th>Email</th>
                                     <th>Groups</th>
                                     <th>Status</th>
-                                    <th>Aksi</th>
+                                    <th colspan="2">Aksi</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -49,43 +49,34 @@
                                     <?php $groups = []; ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
-                                        <td><?php echo htmlspecialchars($user->nip, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($user->username, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
-                                            <?php foreach ($user->groups as $group): ?>
-                                                <?php $groups[] = $group->name; ?>
-                                                <?php if ($this->config->item('admin_group', 'ion_auth')
-                                                    == $group->name
-                                                ) : ?>
-                                                    <span class="center-block text-center">
-                                                        <?php echo htmlspecialchars(
-                                                            $group->name, ENT_QUOTES,
-                                                            'UTF-8'); ?>
-                                                    </span>
-                                                <?php else: ?>
-                                                    <a href="<?php echo site_url("group-edit/$group->id") ?>"
-                                                       class="btn btn-default center-block">
-                                                        <?php echo htmlspecialchars(
-                                                            $group->name,
-                                                            ENT_QUOTES, 'UTF-8'
-                                                        ) ?>
-                                                    </a>
-                                                <?php endif; ?>
-                                            <?php endforeach ?>
+                                            <?php
+                                            foreach ($user->groups as $group):
+                                                $groups[] = $group->name;
+                                            endforeach;
+                                            echo implode(", ",$groups); ?>
                                         </td>
                                         <td>
-                                            <?php if (in_array(
-                                                $this->config->item('admin_group', 'ion_auth'), $groups)
-                                            ) : ?>
-                                                <?php echo ($user->active) ? anchor(
-                                                    "users/deactivate/" . $user->id , "Aktifkan", "class='btn btn-info'"
-                                                ) :
-                                                    anchor("users/activate/" . $user->id , "Non Aktifkan");
-                                                ?>
-                                            <?php endif; ?>
-
+                                            <?php
+                                                echo ($user->active) ? "Aktif" : "Non Aktif";
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            if ( ! in_array($this->config->item('admin_group', 'ion_auth'), $groups)) :
+                                                echo ($user->active) ?
+                                                    anchor("users/deactivate/" . $user->id ,
+                                                        "Non Aktifkan",
+                                                        "class='btn btn-info'") :
+                                                    anchor("users/activate/" . $user->id ,
+                                                        "Aktifkan",
+                                                        "class='btn btn-info'") ;
+                                                 endif;
+                                            ?>
                                         </td>
                                         <td>
                                             <?php

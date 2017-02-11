@@ -22,7 +22,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Tambah Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Tambah Pengguna Sistem
                 </div>
 
                 <div class="panel-body">
@@ -38,42 +38,41 @@
                             </p>
                             <?php echo form_open('users/create', ['class' => 'form-horizontal']); ?>
 
-                            <?php if($identity_column!=='email') { ?>
                             <div class="form-group">
-                                <label for="username" class="col-sm-2 control-label">Username:</label>
+                                <label for="username" class="col-sm-2 control-label">Nip:</label>
                                 <div class="col-sm-6">
-                                    <?php //echo form_input($last_name); ?>
                                     <input name="username" value="<?php echo $username['value'] ;?>" id="username" type="text" class='form-control'>
                                 </div>
                             </div>
-                            <?php }
+                            <?php// }
                             ?>
                             <div class="form-group">
-                                <?php echo lang('create_user_fname_label', 'first_name', "class='col-sm-2 control-label'"); ?>
+                                <label for="first_name" class="col-sm-2 control-label">First Name</label>
                                 <div class="col-sm-6">
-                                    <?php //echo form_input($first_name); ?>
                                     <input name="first_name" value="<?php echo $first_name['value'] ;?>" id="first_name" type="text" class='form-control'>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <?php echo lang('create_user_lname_label', 'last_name', "class='col-sm-2 control-label'"); ?>
+                                <label for="last_name" class="col-sm-2 control-label">Last Name</label>
                                 <div class="col-sm-6">
-                                    <?php //echo form_input($last_name); ?>
                                     <input name="last_name" value="<?php echo $last_name['value'] ;?>" id="last_name" type="text" class='form-control'>
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <?php echo lang('create_user_password_label', 'password', "class='col-sm-2 control-label'");?>
+                                <label for="last_name" class="col-sm-2 control-label">E-mail</label>
                                 <div class="col-sm-6">
-                                    <?php //echo form_input($password);?>
+                                    <input name="email" value="<?php echo $email['value'] ;?>" id="email" type="text" class='form-control'>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-sm-2 control-label">Password</label>
+                                <div class="col-sm-6">
                                     <input name="password" value="<?php echo $password['value'] ;?>" id="password" type="password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <?php echo lang('create_user_password_confirm_label', 'password_confirm', "class='col-sm-2 control-label'");?>
+                                <label for="password_confirm" class="col-sm-2 control-label">Password Confirmation</label>
                                 <div class="col-sm-6">
-                                    <?php // echo form_input($password_confirm);?>
                                     <input name="password_confirm" value="<?php echo $password_confirm['value'] ;?>" id="password_confirm" type="password", class="form-control">
                                 </div>
                             </div>
