@@ -165,4 +165,18 @@ class TicketModel extends CI_Model
         }
             return false;
     }
+
+    public function update_ticket($id, $data)
+    {
+        $this->db->trans_start();
+        $this->db->where('ticket_id', $id);
+        $this->db->update('ticket', $data);
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === TRUE) {
+            return true;
+        }
+
+            return false;
+    }
 }

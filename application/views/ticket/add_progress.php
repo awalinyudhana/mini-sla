@@ -68,7 +68,8 @@
                             </table>
                         </div>
                     </div>
-                    <?php echo form_open_multipart('ticket_list/save_progress', ['class' => 'form-horizontal']); ?>
+                    <?php echo form_open_multipart('ticket_list/save_progress', ['class' => 'form-horizontal', 'id' => 'ticket_add_progress']); ?>
+                    <input type="hidden" name="ticket_id" value="<?php echo $ticket_data->ticket_id; ?>">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
@@ -79,15 +80,6 @@
                                         <div class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Waktu Progress</label>
-                                <div class="col-sm-9">
-                                    <div class="input-group bootstrap-timepicker timepicker">
-                                        <input id="timepicker1" type="text" class="form-control input-small" name="waktu">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -111,9 +103,34 @@
                             </div>
                         </div>
                         <div class="col-lg-12">
-                        <input type="submit" name="close_ticket" id="close_ticket" value="Close Ticket" class="btn btn-danger pull-right margin-left-10">&nbsp;<input type="submit" name="add_progress" value="Add Progress" class="btn btn-success pull-right">
+                        <button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalClose">Close Ticket</button>
+                        <input type="hidden" name="submit_type" value="add_progress" id="ticket_response_submit_type">
+                        <input type="submit" name="add_progress" value="Add Progress" class="btn btn-success pull-right">
                         </div>
                     </div>
+
+                    <div class="modal" id="modalClose" tabindex="-1" role="dialog" aria-labelledby="modalCloseLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modalCloseLabel">Ticket Closing Report</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <label for="recipient-name" class="control-label">Attachment:</label>
+                                    <input type="file" class="form-control" name="response_documents[]" multiple>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalCloseTicketButton">Close Ticket</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <?php echo form_close();?>
                 </div>
             </div>

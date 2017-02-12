@@ -12,11 +12,14 @@ class TicketListModel extends CI_Model
         parent::__construct();
     }
 
-    public function _get_datatables_query()
+    public function _get_datatables_query($type = null)
     {
         $this->db->select('*')
                  ->from('ticket t')
                  ->join('customer c', 'c.customer_id = t.customer_id');
+        if (isset($type) && $type == 'closed') {
+            $this->db->where('t.close_status', 'Closed');
+        }
         $i = 0;
         foreach ($this->column_search as $item) { // loop column 
             if($_POST['search']['value']) { // if datatable send POST for search
@@ -41,9 +44,9 @@ class TicketListModel extends CI_Model
         }
     }
 
-    public function get_datatables()
+    public function get_datatables($type = null)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($type);
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
@@ -81,6 +84,18 @@ class TicketListModel extends CI_Model
         $row = $query->row();
         if (isset($row)) {
             return $query->result();
+        }
+            return false;
+    }
+
+    public function save_progress($data)
+    {
+        $this->db->trans_start();
+        $this->db->insert('ticket_response', $data);
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === TRUE) {
+            return true;
         }
             return false;
     }

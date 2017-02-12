@@ -89,7 +89,17 @@
                             </table>
                         </div>
                         <div class="col-lg-12">
-                            <?php echo anchor('ticket_list', 'Kembali', "class='btn btn-default pull-right'") ?>
+                            <?php 
+                                if (isset($type) && $type == 'approve') {
+                                    echo anchor('ticket_list/view/'.$ticket_data->ticket_id, 'View Report', "class='btn btn-info'");
+                                    echo anchor('ticket_list/approve_ticket/'.$ticket_data->ticket_id, 'Approve Ticket Closing', "class='btn btn-success margin-left-10'"); 
+                                    echo anchor('ticket_list/closed', 'Kembali', "class='btn btn-default pull-right'");
+                                } else {
+                                    echo anchor('ticket_list', 'Kembali', "class='btn btn-default pull-right'");
+                                }
+                            ?>
+
+                            <?php  ?>
                         </div>
                     </div>
                 </div>

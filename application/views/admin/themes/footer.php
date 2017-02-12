@@ -30,7 +30,6 @@
 </div>
 
 <script type="text/javascript" src="<?php echo base_url("assets/datepicker/bootstrap-datepicker.min.js"); ?>"></script>
-<script type="text/javascript" src="<?php echo base_url("assets/timepicker/bootstrap-timepicker.min.js"); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url("assets/boq-modal.js"); ?>"></script>
 
 <!-- Core Scripts - Include with every page -->
@@ -46,9 +45,10 @@ $('.datepicker').datepicker({
     weekStart: 1,
 });
 
-$('#timepicker1').timepicker({
-    showSeconds: true,
-    showMeridian: false,
+var modalCloseTicketButton = $('#modalCloseTicketButton');
+modalCloseTicketButton.on('click', function() {
+    $("#ticket_response_submit_type").val("close_ticket");
+    $("#ticket_add_progress").submit();
 });
 
 var table;

@@ -11,7 +11,7 @@ class Ticket_List extends CI_Controller
 
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
         {
-            redirect('/', 'refresh');
+            // redirect('/', 'refresh');
         }
         $this->is_admin = $this->ion_auth->is_admin();
         $user = $this->ion_auth->user()->row();
@@ -34,16 +34,22 @@ class Ticket_List extends CI_Controller
         $this->load->view('admin/themes/footer');
     }
 
-    public function ajax_list()
+    public function ajax_list($type = null)
     {
-        $list = $this->model->get_datatables();
+        if (isset($type) && $type == 'closed') {
+            $list = $this->model->get_datatables('closed');
+        } else {
+            $list = $this->model->get_datatables();
+        }
         $data = array();
         $no = $_POST['start'];
         
         foreach ($list as $item) {
             $no++;
             $row = array();
-            if ($item->approved_status == 'Waiting') {
+            if (isset($type) && $type == 'closed') {
+                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id.'/approve').'" class="btn btn-info">View</a>';
+            } else if ($item->close_status == 'Open') {
             $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a> <a href="'.base_url('ticket_list/add_progress/'.$item->ticket_id).'" class="btn btn-success">Add Progress</a>';
             } else {
                 $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a>';
@@ -73,7 +79,7 @@ class Ticket_List extends CI_Controller
         echo json_encode($output);
     }
 
-    public function view($ticket_id)
+    public function view($ticket_id, $type = null)
     {
         $ticket_data = $this->model->get_ticket_data($ticket_id);
         $customer_data = $this->ticket_model->get_customer($ticket_data->customer_id);
@@ -88,12 +94,14 @@ class Ticket_List extends CI_Controller
                 'boq_data' => $boq_data,
                 'boq_detail_data' => $boq_detail_data,
                 'progress_data' => $progress_data,
+                'type' => $type,
             );
         } else {
             $data = array(
                 'ticket_data' => $ticket_data,
                 'customer_data' => $customer_data,
                 'progress_data' => $progress_data,
+                'type' => $type,
             );
         }
 
@@ -138,9 +146,85 @@ class Ticket_List extends CI_Controller
     public function save_progress()
     {
         if (isset($_POST) && !empty($_POST)) {
-            $form_data = array(
-                ''
+            $response_form_data = array(
+                'ticket_id' => $this->input->post('ticket_id'),
+                'tanggal' => $this->input->post('tanggal').' '.date("H:i:s"),
+                'progress' => $this->input->post('progress'),
+                'result' => $this->input->post('result'),
+                'description' => $this->input->post('description'),
+                'by' => 0,
             );
+
+            $this->model->save_progress($response_form_data);
+
+            // If Close Ticket
+            if ($this->input->post('submit_type') == 'close_ticket') {
+                if(!empty($_FILES['response_documents']['name'])) {
+                    $files_count = count($_FILES['response_documents']['name']);
+                    $file_item = $_FILES['response_documents'];
+                    for ($i = 0; $i < $files_count; $i++) {
+                        $_FILES['document']['name'] = $file_item['name'][$i];
+                        $_FILES['document']['type'] = $file_item['type'][$i];
+                        $_FILES['document']['tmp_name'] = $file_item['tmp_name'][$i];
+                        $_FILES['document']['error'] = $file_item['error'][$i];
+                        $_FILES['document']['size'] = $file_item['size'][$i];
+
+                        if (isset($_FILES['document']['size']) && ($_FILES['document']['size'] > 0)) {
+                            $upload_path = './uploads/response_tickets';
+                            $config['upload_path'] = $upload_path;
+                            $config['allowed_types'] = 'gif|jpg|png';
+                            $config['max_size'] = '8192';
+                            $config['encrypt_name'] = true;
+
+                            $this->load->library('upload', $config);
+                            $this->upload->initialize($config);
+                            if ($this->upload->do_upload('document') === false )
+                                return [
+                                    'status' => false,
+                                    'message' => $this->upload->display_errors()
+                                ];
+
+                            $file_data = $this->upload->data();
+                            $uploaded_data[$i] = $file_data['file_name'];
+                        }
+                    }
+                }
+
+                $ticket_form_data = array(
+                    'close_status' => 'Closed',
+                    'close_date' => date('Y-m-d'),
+                    'report_attachment' =>implode(";", $uploaded_data),
+                );
+
+                $this->ticket_model->update_ticket($this->input->post('ticket_id'), $ticket_form_data);
+            }
+
+            redirect(base_url('ticket_list'));
         }
+    }
+
+    public function closed()
+    {
+        $data = array(
+            'title' => 'List Ticket',
+            'table_url' => base_url('ticket_list/ajax_list/closed'),
+        );
+
+        $this->load->view('admin/themes/header');
+        $this->load->view('admin/themes/nav');
+        $this->load->view('admin/themes/sidebar');
+        $this->load->view('ticket/list', $data);
+        $this->load->view('admin/themes/footer');
+    }
+
+    public function approve_ticket($ticket_id)
+    {
+        $ticket_form_data = array(
+            'approved_status' => 'Approved',
+            'approved_date' => date('Y-m-d'),
+        );
+
+        $this->ticket_model->update_ticket($ticket_id, $ticket_form_data);
+        redirect(base_url('ticket_list/closed'));
     }
 }
