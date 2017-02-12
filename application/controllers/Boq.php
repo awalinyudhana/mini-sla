@@ -9,7 +9,6 @@ class Boq extends CI_Controller
     {
         parent::__construct();
 
-        parent::__construct();
         if(! $this->ion_auth->in_group('BOQ'))
         {
             redirect('Login', 'refresh');
