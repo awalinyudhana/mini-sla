@@ -29,8 +29,28 @@
     </div>
 </div>
 
+<script type="text/javascript" src="<?php echo base_url("assets/datepicker/bootstrap-datepicker.min.js"); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url("assets/boq-modal.js"); ?>"></script>
+
 <!-- Core Scripts - Include with every page -->
 <script type="text/javascript">
+jQuery(document).ready(function() {  
+    BoQModal.init();
+});
+
+$('.datepicker').datepicker({
+    format: 'yyyy-m-d',
+    todayHighlight: true,
+    autoclose: true,
+    weekStart: 1,
+});
+
+var modalCloseTicketButton = $('#modalCloseTicketButton');
+modalCloseTicketButton.on('click', function() {
+    $("#ticket_response_submit_type").val("close_ticket");
+    $("#ticket_add_progress").submit();
+});
+
 var table;
 var datatable_url;
 $(document).ready(function() {
@@ -63,13 +83,6 @@ $(document).ready(function() {
  
 });
 
-var aElems = document.getElementsByClassName('delete-confirmation');
-
-    for (var i = 0, len = aElems.length; i < len; i++) {
-        aElems[i].onclick = function() {
-            return confirm("Are you sure you want to leave?");
-        };
-    }
 $('#confirm-delete').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 });

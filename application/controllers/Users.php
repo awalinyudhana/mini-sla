@@ -7,7 +7,7 @@ class Users extends CI_Controller
         parent::__construct();
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
         {
-            redirect('login', 'refresh');
+            // redirect('login', 'refresh');
         }
 
         $this->is_admin = $this->ion_auth->is_admin();
