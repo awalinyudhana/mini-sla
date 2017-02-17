@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | <?php echo $title ?>
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | <?php echo $title ?>
                 </div>
 
                 <div class="panel-body">
@@ -32,10 +32,11 @@
                                         <th>Tanggal</th>
                                         <th>Judul</th>
                                         <th>Customer</th>
+                                        <th>Perangkat</th>
+                                        <th>Category</th>
                                         <th>Request By</th>
                                         <th>Tech. Status</th>
                                         <th>Lead Approval</th>
-                                        <th>Category</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

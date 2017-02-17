@@ -36,8 +36,9 @@
                                     <th>Nama Belakang</th>
                                     <th>Email</th>
                                     <th>Groups</th>
-                                    <th>Status</th>
-                                    <th colspan="2">Aksi</th>
+<!--                                    <th>Status</th>-->
+<!--                                    <th colspan="2">Aksi</th>-->
+                                    <th>Aksi</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -60,24 +61,24 @@
                                             endforeach;
                                             echo implode(", ",$groups); ?>
                                         </td>
-                                        <td>
-                                            <?php
-                                                echo ($user->active) ? "Aktif" : "Non Aktif";
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            if ( ! in_array($this->config->item('admin_group', 'ion_auth'), $groups)) :
-                                                echo ($user->active) ?
-                                                    anchor("users/deactivate/" . $user->id ,
-                                                        "Non Aktifkan",
-                                                        "class='btn btn-info'") :
-                                                    anchor("users/activate/" . $user->id ,
-                                                        "Aktifkan",
-                                                        "class='btn btn-info'") ;
-                                                 endif;
-                                            ?>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            --><?php
+//                                                echo ($user->active) ? "Aktif" : "Non Aktif";
+//                                            ?>
+<!--                                        </td>-->
+<!--                                        <td>-->
+<!--                                            --><?php
+//                                            if ( ! in_array($this->config->item('admin_group', 'ion_auth'), $groups)) :
+//                                                echo ($user->active) ?
+//                                                    anchor("users/deactivate/" . $user->id ,
+//                                                        "Non Aktifkan",
+//                                                        "class='btn btn-info'") :
+//                                                    anchor("users/activate/" . $user->id ,
+//                                                        "Aktifkan",
+//                                                        "class='btn btn-info'") ;
+//                                                 endif;
+//                                            ?>
+<!--                                        </td>-->
                                         <td>
                                             <?php
                                             echo anchor(

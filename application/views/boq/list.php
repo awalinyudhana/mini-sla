@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | List of Added BoQ
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | List of Added BoQ
                 </div>
 
                 <div class="panel-body">
@@ -27,7 +27,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nomor BoQ</th>
+<!--                                        <th>Nomor BoQ</th>-->
+                                        <th>Nomor PO</th>
                                         <th>Tanggal Add</th>
                                         <th>Nama Customer</th>
                                         <th>Service Level</th>

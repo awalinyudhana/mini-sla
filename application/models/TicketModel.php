@@ -25,7 +25,7 @@ class TicketModel extends CI_Model
             $column_order = $this->customer_column_order;
             $column_search = $this->customer_column_search;
         } else if ($this->table == 'boq_detail') {
-            $this->db->select('bd.*, p.*, c.*')
+            $this->db->select('bd.*, p.*, c.*, b.purchase_order')
                      ->from('boq_detail bd')
                      ->join('perangkat p', 'p.perangkat_id = bd.perangkat_id')
                      ->join('boq b', 'b.boq_id = bd.boq_id')
@@ -94,10 +94,11 @@ class TicketModel extends CI_Model
 
     public function get_boq($boq_id)
     {
-        $this->db->select('b.*, sl.service_level, c.nama_customer')
+        $this->db->select('b.*, sl.service_level, c.nama_customer, u.first_name, u.last_name')
                      ->from('boq b')
                      ->join('service_level sl', 'sl.service_level_id = b.service_level_id')
                      ->join('customer c', 'c.customer_id = b.customer_id')
+                     ->join('users u', 'u.id = b.user_id')
                      ->where('b.boq_id', $boq_id);
         $query = $this->db->get('boq');
         $row = $query->row();
@@ -123,10 +124,44 @@ class TicketModel extends CI_Model
             return false;
     }
 
+    public function get_list_support()
+    {
+        $this->db->select('u.*');
+        $this->db->from('users u');
+        $this->db->join('users_groups ug', 'ug.user_id = u.id','left');
+        $this->db->join('groups g', 'g.id = ug.group_id','left');
+        $this->db->where('g.name', $this->config->item('default_group', 'ion_auth'));
+        return $this->db->get()->result();
+    }
+
+    public function get_list_support_by_ticket($ticket)
+    {
+
+        $this->db->select('u.*');
+        $this->db->from('users u');
+        $this->db->join('ticket_users tu', 'tu.user_id = u.id','left');
+        $this->db->join('users_groups ug', 'ug.user_id = u.id','left');
+        $this->db->join('groups g', 'g.id = ug.group_id','left');
+        $this->db->where('tu.ticket_id', $ticket);
+        $this->db->where('g.name', $this->config->item('default_group', 'ion_auth'));
+        return $this->db->get()->result();
+    }
+
     public function get_customer($customer_id)
     {
         $this->db->where('customer_id', $customer_id);
         $query = $this->db->get('customer');
+        $row = $query->row();
+        if (isset($row)) {
+            return $row;
+        }
+            return false;
+    }
+
+    public function get_user($user_id)
+    {
+        $this->db->where('id', $user_id);
+        $query = $this->db->get('users');
         $row = $query->row();
         if (isset($row)) {
             return $row;
@@ -158,12 +193,13 @@ class TicketModel extends CI_Model
     {
         $this->db->trans_start();
         $this->db->insert('ticket', $data);
+        $last_insert_id = $this->db->insert_id();
         $this->db->trans_complete();
 
         if ($this->db->trans_status() === TRUE) {
-            return true;
+            return $last_insert_id;
         }
-            return false;
+        return false;
     }
 
     public function update_ticket($id, $data)
@@ -178,5 +214,18 @@ class TicketModel extends CI_Model
         }
 
             return false;
+    }
+
+    public function insert_ticket_users($ticket, $user)
+    {
+
+        $this->db->trans_start();
+        $this->db->insert('ticket_users', ['ticket_id' => $ticket, 'user_id' => $user]);
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === TRUE) {
+            return true;
+        }
+        return false;
     }
 }

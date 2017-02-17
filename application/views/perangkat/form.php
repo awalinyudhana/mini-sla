@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | <?php echo $title ?>
+                    <i class="fa fa-apple fa-fw"></i> Sistem Pemeliharaan Produk | <?php echo $title ?>
                 </div>
 
                 <div class="panel-body">
@@ -37,21 +37,30 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Part Number</label>
                                 <div class="col-sm-6">
-                                    <input name="part_number" <?php if ($mode == 'update') echo "value='$part_number'" ?>type="text" class='form-control'>
+                                    <input name="part_number"
+                                           value="<?php echo set_value('part_number',
+                                               $mode == 'update' ? $part_number : null); ?>"
+                                           type="text" class='form-control'>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Brand</label>
                                 <div class="col-sm-6">
-                                    <input name="brand" <?php if ($mode == 'update') echo "value='$brand'" ?>type="text" class='form-control'>
+                                    <input name="brand"
+                                           value="<?php echo set_value('brand',
+                                               $mode == 'update' ? $brand : null); ?>"
+                                           type="text" class='form-control'>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Nama Perangkat</label>
                                 <div class="col-sm-6">
-                                    <input name="nama_perangkat" <?php if ($mode == 'update') echo "value='$nama_perangkat'" ?>type="text" class='form-control'>
+                                    <input name="nama_perangkat"
+                                           value="<?php echo set_value('nama_perangkat',
+                                               $mode == 'update' ? $nama_perangkat : null); ?>"
+                                           type="text" class='form-control'>
                                 </div>
                             </div>
 
@@ -59,10 +68,31 @@
                                 <label class="col-sm-2 control-label">Type</label>
                                 <div class="col-sm-6">
                                     <select name="type">
-                                        <option value="Hardware" <?php  if ($mode == 'update' && $type == 'Hardware') echo "selected" ?>>Hardware</option>
-                                        <option value="Software" <?php  if ($mode == 'update' && $type == 'Software') echo "selected" ?>>Software</option>
-                                        <option value="License" <?php  if ($mode == 'update' && $type == 'License') echo "selected" ?>>License</option>
-                                        <option value="Warranty" <?php  if ($mode == 'update' && $type == 'Warranty') echo "selected" ?>>Warranty</option>
+                                        <option value="Hardware"
+                                            <?php echo  set_select(
+                                                'type', 'Hardware',
+                                                ($mode == 'update' && $type == 'Hardware') ?  TRUE : FALSE
+                                            ); ?> >
+                                            Hardware
+                                        </option>
+                                        <option value="Software" <?php echo set_select(
+                                            'type', 'Software',
+                                            ($mode == 'update' && $type == 'Software') ?  TRUE : FALSE
+                                        ); ?> >
+                                            Software
+                                        </option>
+                                        <option value="License"  <?php echo set_select(
+                                            'type', 'License',
+                                            ($mode == 'update' && $type == 'License') ?  TRUE : FALSE
+                                        ); ?> >
+                                            License
+                                        </option>
+                                        <option value="Warranty"  <?php echo  set_select(
+                                            'type', 'Warranty',
+                                            ($mode == 'update' && $type == 'Warranty') ?  TRUE : FALSE
+                                        ); ?> >
+                                            Warranty
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -71,10 +101,36 @@
                                 <label class="col-sm-2 control-label">Status</label>
                                 <div class="col-sm-6">
                                     <select name="status">
-                                        <option value="Active" <?php  if ($mode == 'update' && $status == 'Active') echo "selected" ?>>Active</option>
-                                        <option value="End of Sales" <?php  if ($mode == 'update' && $status == 'End of Sales') echo "selected" ?>>End of Sales</option>
-                                        <option value="End of Support" <?php  if ($mode == 'update' && $status == 'End of Support') echo "selected" ?>>End of Support</option>
+                                        <option value="Active" <?php echo set_select(
+                                            'status', 'Active',
+                                            ($mode == 'update' && $status == 'Active') ?  TRUE : FALSE
+                                        ); ?> >
+                                            Active
+                                        </option>
+                                        <option value="End of Sales"  <?php echo set_select(
+                                            'status', 'End of Sales',
+                                            ($mode == 'update' && $status == 'End of Sales') ?  TRUE : FALSE
+                                        ); ?> >
+                                            End of Sales
+                                        </option>
+                                        <option value="End of Support"  <?php echo  set_select(
+                                            'status', 'End of Support',
+                                            ($mode == 'update' && $status == 'End of Support') ?  TRUE : FALSE
+                                        ); ?> >
+                                            End of Support
+                                        </option>
+
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Url Tambahan</label>
+                                <div class="col-sm-6">
+                                    <input name="hyperlink"
+                                           value="<?php echo set_value('hyperlink',
+                                               $mode == 'update' ? $hyperlink : null); ?>"
+                                           type="text" class='form-control'>
                                 </div>
                             </div>
 

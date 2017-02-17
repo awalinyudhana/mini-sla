@@ -9,13 +9,13 @@ class Ticket extends CI_Controller
     {
         parent::__construct();
 
-        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
-        {
-            redirect('/', 'refresh');
-        }
-        $this->is_admin = $this->ion_auth->is_admin();
-        $user = $this->ion_auth->user()->row();
-        $this->logged_in_name = $user->first_name;
+//        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+//        {
+//            redirect('/', 'refresh');
+//        }
+//        $this->is_admin = $this->ion_auth->is_admin();
+//        $user = $this->ion_auth->user()->row();
+//        $this->logged_in_name = $user->first_name;
         $this->load->model('TicketModel', 'model');
     }
 
@@ -54,7 +54,7 @@ class Ticket extends CI_Controller
             $row[] = $item->serial_number;
             $row[] = $item->nama_perangkat;
             $row[] = $item->nama_customer;
-            $row[] = $item->boq_id;
+            $row[] = $item->purchase_order;
             $row[] = $action;
 
             $data[] = $row;
@@ -122,82 +122,80 @@ class Ticket extends CI_Controller
     public function create($type, $id = null)
     {
         if (isset($_POST) && !empty($_POST)) {
-            // var_dump($this->input->post());
-            if(!empty($_FILES['documents']['name'])) {
-                $files_count = count($_FILES['documents']['name']);
-                $file_item = $_FILES['documents'];
-                for ($i = 0; $i < $files_count; $i++) {
-                    $_FILES['document']['name'] = $file_item['name'][$i];
-                    $_FILES['document']['type'] = $file_item['type'][$i];
-                    $_FILES['document']['tmp_name'] = $file_item['tmp_name'][$i];
-                    $_FILES['document']['error'] = $file_item['error'][$i];
-                    $_FILES['document']['size'] = $file_item['size'][$i];
 
-                    if (isset($_FILES['document']['size']) && ($_FILES['document']['size'] > 0)) {
-                        $upload_path = './uploads/tickets';
-                        $config['upload_path'] = $upload_path;
-                        $config['allowed_types'] = 'gif|jpg|png';
-                        $config['max_size'] = '8192';
-                        $config['encrypt_name'] = true;
+            $this->form_validation->set_rules('request_by', 'Request Oleh', 'required');
+            $this->form_validation->set_rules('category', 'Kategory Tiket', 'required');
+            $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
+            $this->form_validation->set_rules('judul', 'Judul', 'required');
 
-                        $this->load->library('upload', $config);
-                        $this->upload->initialize($config);
-                        if ($this->upload->do_upload('document') === false )
-                            return [
-                                'status' => false,
-                                'message' => $this->upload->display_errors()
-                            ];
+            if ($this->form_validation->run() === FALSE) {
+                $data['message'] = validation_errors();
+            }
+            else
+            {
+                $file_name = null;
+                if ($_FILES['document']['size'] > 0 && !empty($_FILES['document']['name']))
+                {
+                    $config['upload_path']          = './uploads/tickets';
+                    $config['allowed_types']        = 'gif|jpg|png';
+                    $config['max_size']             = 3062;
+                    $config['overwrite']             = false;
 
-                        $file_data = $this->upload->data();
-                        $uploaded_data[$i] = $file_data['file_name'];
+                    $this->load->library('upload', $config);
+
+                    if ( ! $this->upload->do_upload('document'))
+                    {
+
+
+                        return false;
                     }
+
+                    $file_name = $this->upload->data()['file_name'];
+
+                }
+
+                if ($type == 'by_device') {
+                    $boq_detail_data = $this->model->get_boq_detail($this->input->post('boq_detail_id'));
+                    $boq_data = $this->model->get_boq($boq_detail_data->boq_id);
+                    $boq_customer_id = $boq_data->customer_id;
+
+                    $form_data = array(
+                        'ticket_by' => $type,
+                        'boq_detail_id' => $this->input->post('boq_detail_id'),
+                        'customer_id' => $boq_customer_id,
+                        'judul' => $this->input->post('judul'),
+                        'request_by' => $this->input->post('request_by'),
+                        'category' => $this->input->post('category'),
+                        'document' => $file_name,
+                        'user_id' => $this->ion_auth->get_user_id(),
+                        'deskripsi' => $this->input->post('deskripsi')
+                    );
+                } else if ($type == 'by_customer') {
+                    $form_data = array(
+                        'ticket_by' => $type,
+                        'customer_id' => $this->input->post('customer_id'),
+                        'tanggal' => date("Y-m-d"),
+                        'judul' => $this->input->post('judul'),
+                        'request_by' => $this->input->post('request_by'),
+                        'category' => $this->input->post('category'),
+                        'document' => $file_name,
+                        'user_id' => $this->ion_auth->get_user_id(),
+                        'deskripsi' => $this->input->post('deskripsi')
+                    );
+                }
+
+                if ($ticket = $this->model->create_ticket($form_data)) {
+
+                    $technician_data = array_unique($this->input->post('teknisi'));
+                    foreach ($technician_data as $key => $value) {
+                        if ($value != 0)
+                            $this->model->insert_ticket_users($ticket, $value);
+                    }
+                    redirect(base_url('ticket_list/view/'.$ticket));
+                } else {
+                    $data['message'] = 'Terdapat kesalahan saat menyimpan data';
                 }
             }
-
-            $technician_data = $this->input->post('technician');
-            foreach ($technician_data as $key => $value) {
-                if ($value == 'none') {
-                    unset($technician_data[$key]);
-                }
-            }
-
-            if ($type == 'by_device') {
-                $boq_detail_data = $this->model->get_boq_detail($this->input->post('boq_detail_id'));
-                $boq_data = $this->model->get_boq($boq_detail_data->boq_id);
-                $boq_customer_id = $boq_data->customer_id;
-                
-                $form_data = array(
-                    'ticket_by' => $type,
-                    'boq_detail_id' => $this->input->post('boq_detail_id'),
-                    'customer_id' => $boq_customer_id,
-                    'tanggal' => date("Y-m-d"),
-                    'judul' => $this->input->post('judul'),
-                    'request_by' => $this->input->post('request_by'),
-                    'category' => $this->input->post('category'),
-                    'documents' => implode(";", $uploaded_data),
-                    'technician' => implode(";", $technician_data),
-                    'deskripsi' => $this->input->post('deskripsi')
-                );
-            } else if ($type == 'by_customer') {
-                $form_data = array(
-                    'ticket_by' => $type,
-                    'customer_id' => $this->input->post('customer_id'),
-                    'tanggal' => date("Y-m-d"),
-                    'judul' => $this->input->post('judul'),
-                    'request_by' => $this->input->post('request_by'),
-                    'category' => $this->input->post('category'),
-                    'documents' => implode(";", $uploaded_data),
-                    'technician' => implode(";", $technician_data),
-                    'deskripsi' => $this->input->post('deskripsi')
-                );
-            } 
-
-            if ($this->model->create_ticket($form_data)) {
-                redirect(base_url('ticket/'.$type));
-            } else {
-                $data['message'] = 'Terdapat kesalahan saat menyimpan data';
-            }
-            return false;
         }
 
         if ($type == 'by_device') {
@@ -205,24 +203,22 @@ class Ticket extends CI_Controller
             $boq_detail_data = $this->model->get_boq_detail($boq_detail_id);
             $boq_data = $this->model->get_boq($boq_detail_data->boq_id);
             $customer_data = $this->model->get_customer($boq_data->customer_id);
+            $user_data = $this->model->get_user($boq_data->user_id);
 
-            $data = array(
-                'title' => 'New Ticket Detail',
-                'type' => $type,
-                'boq_detail_data' => $boq_detail_data,
-                'boq_data' => $boq_data,
-                'customer_data' => $customer_data,
-            );
+            $data['boq_detail_data'] = $boq_detail_data;
+            $data['boq_data'] = $boq_data;
+            $data['user_data'] = $user_data;
+
         } else if ($type == 'by_customer') {
             $customer_id = $id;
             $customer_data = $this->model->get_customer($customer_id);
-
-            $data = array(
-                'title' => 'New Ticket Detail',
-                'type' => $type,
-                'customer_data' => $customer_data,
-            );
         }
+
+        $data['title'] = 'New Ticket';
+        $data['type'] = $type;
+        $data['customer_data'] = $customer_data;
+
+        $data['list_support'] = $this->model->get_list_support();
 
         $this->load->view('admin/themes/header');
         $this->load->view('admin/themes/nav');

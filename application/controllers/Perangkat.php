@@ -7,13 +7,11 @@ class Perangkat extends CI_Controller
     {
         parent::__construct();
 
-        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
-        {
-            redirect('/', 'refresh');
-        }
-        $this->is_admin = $this->ion_auth->is_admin();
-        $user = $this->ion_auth->user()->row();
-        $this->logged_in_name = $user->first_name;
+//        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+//        {
+//            redirect('/', 'refresh');
+//        }
+
         $this->load->model('PerangkatModel', 'model');
     }
 
@@ -47,12 +45,15 @@ class Perangkat extends CI_Controller
                 $action = '<a href="'.base_url('perangkat/update/'.$perangkat->perangkat_id).'" class="btn btn-warning">Update</a> <a href="javascript:;" data-href="'.base_url('perangkat/delete/'.$perangkat->perangkat_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Delete</a>';
             }
 
+            $brosur = '<a href="' . $perangkat->hyperlink . '" target="_blank" class="btn btn-info">Detail</a>';
+
             $row[] = $no;
             $row[] = $perangkat->part_number;
             $row[] = $perangkat->brand;
             $row[] = $perangkat->nama_perangkat;
             $row[] = $perangkat->type;
             $row[] = $perangkat->status;
+            $row[] = $brosur;
             $row[] = $action;
 
             $data[] = $row;
@@ -76,9 +77,10 @@ class Perangkat extends CI_Controller
         );
 
         if (isset($_POST) && !empty($_POST)) {
-            $this->form_validation->set_rules('part_number', 'Part Number', 'required');
+            $this->form_validation->set_rules('part_number', 'Part Number', 'required|is_unique[perangkat.part_number]');
             $this->form_validation->set_rules('brand', 'Brand', 'required');
             $this->form_validation->set_rules('nama_perangkat', 'Nama Perangkat', 'required');
+            $this->form_validation->set_rules('hyperlink', 'Url Tambahan', 'prep_url|valid_url|trim');
 
             if ($this->form_validation->run() === FALSE) {
                 $data['message'] = validation_errors();
@@ -89,6 +91,7 @@ class Perangkat extends CI_Controller
                     'nama_perangkat' => $this->input->post('nama_perangkat'),
                     'type' => $this->input->post('type'),
                     'status' => $this->input->post('status'),
+                    'hyperlink' => $this->input->post('hyperlink'),
                 );
 
                 if ($this->model->create($form_data)) {
@@ -112,6 +115,7 @@ class Perangkat extends CI_Controller
             $this->form_validation->set_rules('part_number', 'Part Number', 'required');
             $this->form_validation->set_rules('brand', 'Brand', 'required');
             $this->form_validation->set_rules('nama_perangkat', 'Nama Perangkat', 'required');
+            $this->form_validation->set_rules('hyperlink', 'Url Tambahan', 'prep_url|valid_url|trim');
 
             if ($this->form_validation->run() === FALSE) {
                 $data['message'] = validation_errors();
@@ -122,6 +126,7 @@ class Perangkat extends CI_Controller
                     'nama_perangkat' => $this->input->post('nama_perangkat'),
                     'type' => $this->input->post('type'),
                     'status' => $this->input->post('status'),
+                    'hyperlink' => $this->input->post('hyperlink'),
                 );
                 if ($this->model->update($this->input->post('perangkat_id'), $form_data)) {
                     redirect(base_url('perangkat'));
@@ -145,6 +150,7 @@ class Perangkat extends CI_Controller
             'nama_perangkat' => $form_data->nama_perangkat,
             'type' => $form_data->type,
             'status' => $form_data->status,
+            'hyperlink' => $form_data->hyperlink,
         );
 
         $this->load->view('admin/themes/header');

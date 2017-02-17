@@ -22,7 +22,7 @@
                                 <?php
                             } ?>
 
-                            <p align="right"><?php echo anchor('groups/create', 'Tambah Group', "class='btn btn-success'") ?></p>
+<!--                            <p align="right">--><?php //echo anchor('groups/create', 'Tambah Group', "class='btn btn-success'") ?><!--</p>-->
                             <table class="table">
                                 <thead>
                                 <tr>

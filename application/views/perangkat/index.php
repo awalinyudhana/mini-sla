@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Daftar Data Perangkat
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Daftar Data Perangkat
                 </div>
 
                 <div class="panel-body">
@@ -36,6 +36,7 @@
                                         <th>Nama Perangkat</th>
                                         <th>Type</th>
                                         <th>Status</th>
+                                        <th>Hyperlink</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

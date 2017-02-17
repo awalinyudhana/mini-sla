@@ -132,10 +132,11 @@ class BoqModel extends CI_Model
 
     public function get_boq($boq_id)
     {
-        $this->db->select('b.*, sl.service_level, c.nama_customer')
+        $this->db->select('b.*, sl.service_level, c.nama_customer, u.first_name, u.last_name')
                      ->from('boq b')
                      ->join('service_level sl', 'sl.service_level_id = b.service_level_id')
                      ->join('customer c', 'c.customer_id = b.customer_id')
+                     ->join('users u', 'u.id = b.user_id')
                      ->where('b.boq_id', $boq_id);
         $query = $this->db->get('boq');
         $row = $query->row();
@@ -157,7 +158,7 @@ class BoqModel extends CI_Model
 
     public function delete($id)
     {
-        $this->db->delete($this->table, array('customer_id' => $id));
+        $this->db->delete('boq', array('boq_id' => $id));
     }
 
     public function delete_detail($boq_detail_id)

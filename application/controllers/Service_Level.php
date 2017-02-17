@@ -75,14 +75,14 @@ class Service_Level extends CI_Controller
 
         if (isset($_POST) && !empty($_POST)) {
             $this->form_validation->set_rules('service_level', 'Service Level', 'required');
-            $this->form_validation->set_rules('mom', 'MoM', 'required');
-            $this->form_validation->set_rules('bom', 'BoM', 'required');
-            $this->form_validation->set_rules('doc', 'Doc', 'required');
-            $this->form_validation->set_rules('demo', 'Demo', 'required');
-            $this->form_validation->set_rules('installation', 'Installation', 'required');
-            $this->form_validation->set_rules('maintenance', 'Maintenance', 'required');
-            $this->form_validation->set_rules('support', 'Support', 'required');
-            $this->form_validation->set_rules('sla', 'SLA (Day)', 'required|numeric');
+            $this->form_validation->set_rules('mom', 'MoM', 'required|numeric');
+            $this->form_validation->set_rules('bom', 'BoM', 'required|numeric');
+            $this->form_validation->set_rules('doc', 'Doc', 'required|numeric');
+            $this->form_validation->set_rules('demo', 'Demo', 'required|numeric');
+            $this->form_validation->set_rules('installation', 'Installation', 'required|numeric');
+            $this->form_validation->set_rules('maintenance', 'Maintenance', 'required|numeric');
+            $this->form_validation->set_rules('support', 'Support', 'required|numeric');
+            $this->form_validation->set_rules('sla', 'SLA (Day)', 'required|numeric|numeric');
 
             if ($this->form_validation->run() === FALSE) {
                 $data['message'] = validation_errors();
@@ -118,13 +118,13 @@ class Service_Level extends CI_Controller
     {
         if (isset($_POST) && !empty($_POST)) {
             $this->form_validation->set_rules('service_level', 'Service Level', 'required');
-            $this->form_validation->set_rules('mom', 'MoM', 'required');
-            $this->form_validation->set_rules('bom', 'BoM', 'required');
-            $this->form_validation->set_rules('doc', 'Doc', 'required');
-            $this->form_validation->set_rules('demo', 'Demo', 'required');
-            $this->form_validation->set_rules('installation', 'Installation', 'required');
-            $this->form_validation->set_rules('maintenance', 'Maintenance', 'required');
-            $this->form_validation->set_rules('support', 'Support', 'required');
+            $this->form_validation->set_rules('mom', 'MoM', 'required|numeric');
+            $this->form_validation->set_rules('bom', 'BoM', 'required|numeric');
+            $this->form_validation->set_rules('doc', 'Doc', 'required|numeric');
+            $this->form_validation->set_rules('demo', 'Demo', 'required|numeric');
+            $this->form_validation->set_rules('installation', 'Installation', 'required|numeric');
+            $this->form_validation->set_rules('maintenance', 'Maintenance', 'required|numeric');
+            $this->form_validation->set_rules('support', 'Support', 'required|numeric');
             $this->form_validation->set_rules('sla', 'SLA (Day)', 'required|numeric');
 
             if ($this->form_validation->run() === FALSE) {

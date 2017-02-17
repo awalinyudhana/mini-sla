@@ -3,8 +3,8 @@
 class TicketListModel extends CI_Model
 {
     var $table = 'ticket';
-    var $column_order = array(null, 'ticket_id', 'tanggal', 'judul', 'nama_customer', 'request_by', 'close_status', 'approved_status', 'category');
-    var $column_search = array('ticket_id', 'tanggal', 'judul', 'nama_customer', 'request_by', 'close_status', 'approved_status', 'category');
+    var $column_order = array(null, 'ticket_id', 'tanggal', 'judul', 'nama_customer', 'nama_perangkat', 'request_by', 'close_status', 'approved_status', 'category');
+    var $column_search = array('ticket_id', 'tanggal', 'judul', 'nama_customer', 'nama_perangkat', 'request_by', 'close_status', 'approved_status', 'category');
     var $order = array('t.ticket_id' => 'asc');
 
     public function __construct()
@@ -16,7 +16,9 @@ class TicketListModel extends CI_Model
     {
         $this->db->select('*')
                  ->from('ticket t')
-                 ->join('customer c', 'c.customer_id = t.customer_id');
+                 ->join('customer c', 'c.customer_id = t.customer_id')
+                 ->join('boq_detail bd', 'bd.boq_detail_id = t.boq_detail_id', 'left')
+                 ->join('perangkat p', 'p.perangkat_id = bd.perangkat_id', 'left');
         if (isset($type) && $type == 'closed') {
             $this->db->where('t.close_status', 'Closed');
         }
@@ -68,8 +70,10 @@ class TicketListModel extends CI_Model
 
     public function get_ticket_data($ticket_id)
     {
+        $this->db->from('ticket t');
+        $this->db->join('users u','u.id = t.user_id');
         $this->db->where('ticket_id', $ticket_id);
-        $query = $this->db->get('ticket');
+        $query = $this->db->get();
         $row = $query->row();
         if (isset($row)) {
             return $row;

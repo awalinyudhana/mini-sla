@@ -11,12 +11,12 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | <?php echo $title ?>
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | <?php echo $title ?>
                 </div>
 
                 <div class="panel-body">
                     <?php 
-                        echo form_open('boq/add', ['class' => 'form-horizontal']);
+                        echo form_open(current_url(), ['class' => 'form-horizontal']);
                     ?>
                     <div class="row">
                         <div class="col-lg-12">
@@ -41,7 +41,9 @@
                                 <label class="col-sm-6 control-label">Start Date of Support</label>
                                 <div class="col-sm-6">
                                     <div class="input-group date datepicker" data-provide="datepicker">
-                                        <input type="text" class="form-control" name="start_date_of_support">
+                                        <input type="text" class="form-control"
+                                               value="<?php echo set_value('start_date_of_support'); ?>"
+                                               name="start_date_of_support">
                                         <div class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </div>
@@ -52,7 +54,9 @@
                                 <label class="col-sm-6 control-label">End Date of Support</label>
                                 <div class="col-sm-6">
                                     <div class="input-group date datepicker" data-provide="datepicker">
-                                        <input type="text" class="form-control" name="end_date_of_support">
+                                        <input type="text" class="form-control"
+                                               value="<?php echo set_value('end_date_of_support'); ?>"
+                                               name="end_date_of_support">
                                         <div class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </div>
@@ -60,12 +64,21 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-6 control-label">No Purchase</label>
+                                <div class="col-sm-6">
+                                    <input name="purchase_order"
+                                           value="<?php echo set_value('purchase_order'); ?>"
+                                           type="text" class='form-control'>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-6 control-label">Service Level</label>
                                 <div class="col-sm-6">
-                                    <select name="service_level_id">
+                                    <select name="service_level_id" class="form-control">
                                         <?php
                                             foreach ($service_level_data as $value) {
-                                                echo "<option value='".$value->service_level_id."'>$value->service_level</option>";
+                                                echo "<option value='".$value->service_level_id."'". set_select(
+                                                'service_level_id',$value->service_level_id) .">$value->service_level</option>";
                                             }
                                         ?>
                                     </select>
@@ -111,7 +124,7 @@
     </div>
 
     <div class="modal" id="modalPerangkat" tabindex="-1" role="dialog" aria-labelledby="modalPerangkatLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog" role="document" style="width: 750px;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -127,6 +140,7 @@
                         <th>Nama Perangkat</th>
                         <th>Type</th>
                         <th>Status</th>
+                        <th>Detail</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -144,7 +158,8 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="modalSerialLabel">Isi Keterangan</h4>
           </div>
           <div class="modal-body">

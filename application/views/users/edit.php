@@ -76,7 +76,6 @@
                                 <div class="col-sm-10">
                                     <?php
 
-                                    echo $this->config->item('admin_group');
                                     foreach ($groups as $group): ?>
                                         <?php
                                         $gID = $group['id'];
@@ -93,20 +92,12 @@
                                         }
 
                                         ?>
-                                        <?php if ( $this->config->item('admin_group', 'ion_auth') != $current_groups) : ?>
-                                            <?php if ($this->config->item('admin_group', 'ion_auth') != $group['name']) : ?>
-                                                <label class="btn btn-default">
-                                                    <input type="checkbox" name="groups[]"
-                                                           value="<?php echo $group['id']; ?>"<?php echo $checked; ?>>
-                                                    <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
-                                                </label>
-                                            <?php
-                                            endif;
-                                        endif; ?>
+                                        <label class="btn btn-default">
+                                            <input type="checkbox" name="groups[]"
+                                                   value="<?php echo $group['id']; ?>"<?php echo $checked; ?>>
+                                            <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
+                                        </label>
                                     <?php endforeach ?>
-                                    <?php if ( $this->config->item('admin_group', 'ion_auth') == $current_groups) :
-                                        echo "Administrator";
-                                    endif; ?>
 
                                 </div>
                             </div>
@@ -132,7 +123,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-10">
-                                    <p><?php echo form_submit('submit', 'Edit User', ['class' => 'btn btn-success pull-right']); ?></p>
+                                    <p><?php echo form_submit('submit', 'Update User', ['class' => 'btn btn-success pull-right']); ?></p>
                                 </div>
                             </div>
 

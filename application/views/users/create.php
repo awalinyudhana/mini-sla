@@ -64,6 +64,38 @@
                                     <input name="email" value="<?php echo $email['value'] ;?>" id="email" type="text" class='form-control'>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label for="Groups" class="col-sm-2 control-label">Group</label>
+                                <div class="col-sm-10">
+                                    <?php
+
+                                    foreach ($groups as $group): ?>
+                                        <?php
+                                        $gID = $group['id'];
+                                        $checked = null;
+                                        $item = null;
+                                        if ($currentGroups) {
+                                            foreach ($currentGroups as $grp) {
+                                                if ($gID == $grp) {
+                                                    $checked = ' checked="checked"';
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+
+                                        ?>
+                                        <label class="btn btn-default">
+                                            <input type="checkbox" name="groups[]"
+                                                   value="<?php echo $group['id']; ?>"<?php echo $checked; ?>>
+                                            <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
+                                        </label>
+                                    <?php endforeach ?>
+
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="password" class="col-sm-2 control-label">Password</label>
                                 <div class="col-sm-6">

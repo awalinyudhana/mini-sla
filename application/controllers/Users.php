@@ -7,7 +7,7 @@ class Users extends CI_Controller
         parent::__construct();
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
         {
-            // redirect('login', 'refresh');
+             redirect('login', 'refresh');
         }
 
         $this->is_admin = $this->ion_auth->is_admin();
@@ -42,23 +42,17 @@ class Users extends CI_Controller
     // create a new user
     public function create()
     {
-        //listbox load groupname from db
-        $this->data['groups_name'] = $this->ion_auth->groups()->result();
-
-        $this->data['title'] = $this->lang->line('create_user_heading');
 
         $tables = $this->config->item('tables', 'ion_auth');
         $identity_column = $this->config->item('identity', 'ion_auth');
         $this->data['identity_column'] = $identity_column;
-
-        //get value from listbox group_name
-        //$group_id = $_POST['group_name'];
 
         // validate form input
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
         $this->form_validation->set_rules('username', 'Nip', 'required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
         $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
+        $this->form_validation->set_rules('groups[]', 'Group', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
         $this->form_validation->set_rules('password_confirm', 'Password Confirm', 'required');
 
@@ -68,32 +62,48 @@ class Users extends CI_Controller
             $password = $this->input->post('password');
 
             $additional_data = array(
-                'nip' => $this->input->post('nip'),
-                'username' => $this->input->post('username'),
                 'first_name' => $this->input->post('first_name'),
-                'last_name' => $this->input->post('last_name'),
-                'email' => $this->input->post('email'),
-                'parent_id' => $this->session->userdata('user_id'),
+                'last_name' => $this->input->post('last_name')
             );
         }
         if ($this->form_validation->run() == true && $this->ion_auth->register(
                 $identity, $password, $email, $additional_data)
         ) {
+
+            $groupData = $this->input->post('groups');
+//
+            if (isset($groupData) && !empty($groupData)) {
+
+                //get last inserted user id
+                $this->db->select_max('id');
+                $query = $this->db->get('users')->row();
+
+                $this->ion_auth->remove_from_group('', $query->id);
+
+                foreach ($groupData as $grp) {
+                    $this->ion_auth->add_to_group($grp, $query->id);
+                }
+            }
             // check to see if we are creating the user
             // redirect them back to the admin page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             redirect("users", 'refresh');
-        } else {
+        }
+        else
+        {
             // display the create user form
             // set the flash data error message if there is one
-            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-
-            $this->data['nip'] = array(
-                'name' => 'nip',
-                'id' => 'nip',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('nip'),
+            $this->data['message'] = (
+            validation_errors() ?
+                validation_errors() :
+                ($this->ion_auth->errors() ?
+                    $this->ion_auth->errors() :
+                    $this->session->flashdata('message')
+                )
             );
+
+            $this->data['groups'] = $this->ion_auth->groups()->result_array();
+            $this->data['currentGroups'] = $this->input->post('groups');
 
             $this->data['username'] = array(
                 'name' => 'identity',
@@ -120,13 +130,6 @@ class Users extends CI_Controller
                 'id' => 'email',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('email'),
-            );
-
-            $this->data['group_id'] = array(
-                'name' => 'group_id',
-                'id' => 'group_id',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('group_id'),
             );
 
             $this->data['password'] = array(
@@ -194,12 +197,10 @@ class Users extends CI_Controller
 
             if ($this->form_validation->run() === TRUE) {
                 $data = array(
-                    'nip' => $this->input->post('nip'),
                     'username' => $user->username,
                     'first_name' => $this->input->post('first_name'),
                     'last_name' => $this->input->post('last_name'),
-                    'email' => $this->input->post('email'),
-                    'parent_id' => $this->session->userdata('user_id'),
+                    'email' => $this->input->post('email')
                 );
 
                 // update the password if it was posted

@@ -9,13 +9,13 @@ class Ticket_List extends CI_Controller
     {
         parent::__construct();
 
-        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
-        {
-            // redirect('/', 'refresh');
-        }
-        $this->is_admin = $this->ion_auth->is_admin();
-        $user = $this->ion_auth->user()->row();
-        $this->logged_in_name = $user->first_name;
+//        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+//        {
+//            // redirect('/', 'refresh');
+//        }
+//        $this->is_admin = $this->ion_auth->is_admin();
+//        $user = $this->ion_auth->user()->row();
+//        $this->logged_in_name = $user->first_name;
         $this->load->model('TicketListModel', 'model');
         $this->load->model('TicketModel', 'ticket_model');
     }
@@ -47,23 +47,24 @@ class Ticket_List extends CI_Controller
         foreach ($list as $item) {
             $no++;
             $row = array();
-            if (isset($type) && $type == 'closed') {
-                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id.'/approve').'" class="btn btn-info">View</a>';
-            } else if ($item->close_status == 'Open') {
-            $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a> <a href="'.base_url('ticket_list/add_progress/'.$item->ticket_id).'" class="btn btn-success">Add Progress</a>';
-            } else {
+//            if (isset($type) && $type == 'closed') {
+//                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id.'/approve').'" class="btn btn-info">View</a>';
+//            } else if ($item->close_status == 'Open') {
+//                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a> <a href="'.base_url('ticket_list/add_progress/'.$item->ticket_id).'" class="btn btn-success">Add Progress</a>';
+//            } else {
                 $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a>';
-            }
+//            }
 
             $row[] = $no;
             $row[] = $item->ticket_id;
             $row[] = $item->tanggal;
             $row[] = $item->judul;
             $row[] = $item->nama_customer;
+            $row[] = $item->nama_perangkat;
+            $row[] = $item->category;
             $row[] = $item->request_by;
             $row[] = $item->close_status;
             $row[] = $item->approved_status;
-            $row[] = $item->category;
             $row[] = $action;
 
             $data[] = $row;
@@ -83,6 +84,7 @@ class Ticket_List extends CI_Controller
     {
         $ticket_data = $this->model->get_ticket_data($ticket_id);
         $customer_data = $this->ticket_model->get_customer($ticket_data->customer_id);
+        $list_support = $this->ticket_model->get_list_support_by_ticket($ticket_id);
         $progress_data = $this->model->get_progress_data($ticket_id);
         if ($ticket_data->boq_detail_id != null) {
             $boq_detail_data = $this->ticket_model->get_boq_detail($ticket_data->boq_detail_id);
@@ -94,6 +96,7 @@ class Ticket_List extends CI_Controller
                 'boq_data' => $boq_data,
                 'boq_detail_data' => $boq_detail_data,
                 'progress_data' => $progress_data,
+                'list_support' => $list_support,
                 'type' => $type,
             );
         } else {
@@ -101,6 +104,7 @@ class Ticket_List extends CI_Controller
                 'ticket_data' => $ticket_data,
                 'customer_data' => $customer_data,
                 'progress_data' => $progress_data,
+                'list_support' => $list_support,
                 'type' => $type,
             );
         }

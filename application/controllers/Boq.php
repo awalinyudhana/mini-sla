@@ -9,13 +9,13 @@ class Boq extends CI_Controller
     {
         parent::__construct();
 
-        if(! $this->ion_auth->in_group('BOQ'))
-        {
-            redirect('Login', 'refresh');
-        }
-        $this->is_admin = $this->ion_auth->is_admin();
-        $user = $this->ion_auth->user()->row();
-        $this->logged_in_name = $user->first_name;
+//        if(! $this->ion_auth->in_group('bod'))
+//        {
+//            redirect('Login', 'refresh');
+//        }
+//        $this->is_admin = $this->ion_auth->is_admin();
+//        $user = $this->ion_auth->user()->row();
+//        $this->logged_in_name = $user->first_name;
         $this->load->model('BoqModel', 'model');
     }
 
@@ -89,10 +89,13 @@ class Boq extends CI_Controller
         foreach ($list as $boq) {
             $no++;
             $row = array();
-            $action = '<a href="'.base_url('boq/detail/'.$boq->boq_id).'" class="btn btn-info">View</a>';
+            $action = '<a href="'.base_url('boq/detail/'.$boq->boq_id).'" class="btn btn-info">View</a>
+            <a href="javascript:;" data-href="'.base_url('boq/delete/'.$boq->boq_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Hapus</a>';
+
 
             $row[] = $no;
-            $row[] = $boq->boq_id;
+//            $row[] = $boq->boq_id;
+            $row[] = $boq->purchase_order;
             $row[] = $boq->tanggal_add;
             $row[] = $boq->nama_customer;
             $row[] = $boq->service_level;
@@ -122,13 +125,13 @@ class Boq extends CI_Controller
         foreach ($list as $item) {
             $no++;
             $row = array();
-            $action = '<a href="javascript:;" data-href="'.base_url('boq/delete_detail/'.$item->boq_detail_id.'/'.$boq_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Hapus</a>';
+//            $action = '<a href="javascript:;" data-href="'.base_url('boq/delete_detail/'.$item->boq_detail_id.'/'.$boq_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Hapus</a>';
 
             $row[] = $no;
             $row[] = $item->part_number;
             $row[] = $item->serial_number;
             $row[] = $item->deskripsi;
-            $row[] = $action;
+//            $row[] = $action;
 
             $data[] = $row;
         }
@@ -143,52 +146,76 @@ class Boq extends CI_Controller
         echo json_encode($output);
     }
 
-    public function add($customer_id = null)
+    public function add($customer_id)
     {
         if (isset($_POST) && !empty($_POST)) {
-            $boq_data = array(
-                'tanggal_add' => date("Y-m-d"),
-                'start_date_of_support' => $this->input->post('start_date_of_support'),
-                'end_date_of_support' => $this->input->post('end_date_of_support'),
-                'service_level_id' => $this->input->post('service_level_id'),
-                'customer_id' => $this->input->post('customer_id'),
-            );
+            $this->form_validation->set_rules('start_date_of_support', 'Tanggal Awal Support', 'required');
+            $this->form_validation->set_rules('end_date_of_support', 'Tanggal Akhir Support', 'required');
+            $this->form_validation->set_rules('service_level_id', 'Server Level', 'required|integer');
+            $this->form_validation->set_rules('purchase_order', 'Nomor PO', 'required|is_unique[boq.purchase_order]');
+            $this->form_validation->set_rules('customer_id', 'Customer', 'required|integer');
+            $this->form_validation->set_rules('boq_detail[]', 'Daftar Perangkat', 'required');
 
-            $new_boq_id = $this->model->add_boq($boq_data);
-            if ($new_boq_id) {
-                // BoQ Detail
-                $boq_detail_data = array();
-                $boq_detail = $this->input->post('boq_detail');
-                foreach ($boq_detail as $value) {
-                    $boq_detail_item = explode(";", $value);
-                    $boq_detail_item_data = array(
-                        'boq_id' => $new_boq_id,
-                        'perangkat_id' => $boq_detail_item[0],
-                        'serial_number' => $boq_detail_item[1],
-                        'deskripsi' => $boq_detail_item[2],
-                    );
-                    array_push($boq_detail_data, $boq_detail_item_data);
+            if ($this->form_validation->run() === FALSE) {
+                $data['message'] = validation_errors();
+            }
+            else
+            {
+
+                if (
+                    strtotime($this->input->post('end_date_of_support'))
+                    < strtotime($this->input->post('start_date_of_support'))
+                )
+                {
+                    $data['message'] = "Tanggal Akhir Support harus lebih dari Tanggal Awal Support";
                 }
-                $this->model->add_boq_detail($boq_detail_data);
-                redirect(base_url('boq'));
-            } else {
-                $data['message'] = 'Terdapat kesalahan saat menyimpan data';
+                else
+                {
+                    $boq_data = array(
+                        'start_date_of_support' => $this->input->post('start_date_of_support'),
+                        'end_date_of_support' => $this->input->post('end_date_of_support'),
+                        'service_level_id' => $this->input->post('service_level_id'),
+                        'purchase_order' => $this->input->post('purchase_order'),
+                        'customer_id' => $this->input->post('customer_id'),
+                        'user_id' => $this->ion_auth->get_user_id(),
+                    );
+
+                    $new_boq_id = $this->model->add_boq($boq_data);
+                    if ($new_boq_id) {
+                        // BoQ Detail
+                        $boq_detail_data = array();
+                        $boq_detail = $this->input->post('boq_detail');
+                        foreach ($boq_detail as $value) {
+                            $boq_detail_item = explode(";", $value);
+                            $boq_detail_item_data = array(
+                                'boq_id' => $new_boq_id,
+                                'perangkat_id' => $boq_detail_item[0],
+                                'serial_number' => $boq_detail_item[1],
+                                'deskripsi' => $boq_detail_item[2],
+                            );
+                            array_push($boq_detail_data, $boq_detail_item_data);
+                        }
+                        $this->model->add_boq_detail($boq_detail_data);
+                        redirect(base_url('boq/detail/'.$new_boq_id));
+                    } else {
+                        $data['message'] = 'Terdapat kesalahan saat menyimpan data';
+                    }
+
+                }
             }
         }
 
-        if (!isset($customer_id)) {
+        if ( ! isset($customer_id)) {
             redirect(base_url('boq'));
         }
 
         $customer_data = $this->model->get($customer_id);
         $service_level_data = $this->model->get_service_level();
 
-        $data = array(
-            'title' => 'New Boq Detail',
-            'customer_data' => $customer_data,
-            'service_level_data' => $service_level_data,
-            'perangkat_table_url' => base_url('perangkat/ajax_list/modal'),
-        );
+        $data['title'] = 'New Boq Detail';
+        $data['customer_data'] = $customer_data;
+        $data['service_level_data'] = $service_level_data;
+        $data['perangkat_table_url'] = base_url('perangkat/ajax_list/modal');
 
         $this->load->view('admin/themes/header');
         $this->load->view('admin/themes/nav');
@@ -219,12 +246,12 @@ class Boq extends CI_Controller
     public function delete($id)
     {
         $this->model->delete($id);
-        redirect(base_url('customer'));
+        redirect(base_url('boq/lists'));
     }
 
-    public function delete_detail($boq_detail_id, $boq_id)
-    {
-        $this->model->delete_detail($boq_detail_id);
-        redirect(base_url('boq/detail/'.$boq_id));
-    }
+//    public function delete_detail($boq_detail_id, $boq_id)
+//    {
+//        $this->model->delete_detail($boq_detail_id);
+//        redirect(base_url('boq/detail/'.$boq_id));
+//    }
 }
