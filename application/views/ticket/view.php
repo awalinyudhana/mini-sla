@@ -83,77 +83,69 @@
                                 </tr>
                             </table>
                         </div>
-
-                        <?php echo form_open_multipart(current_url(), ['class' => 'form-horizontal']); ?>
                         <div class="col-lg-6" style="margin-top: 20px !important;">
-                            <table class="boq-customer">
+                            <table class="boq-customer" style="margin-bottom: 10px !important;">
                                 <tr>
-                                    <td><strong>N</strong></td>
-                                    <td><?php echo $ticket_data->ticket_id; ?></td>
+                                    <td><strong>Daftar Teknikal Support</strong></td>
                                 </tr>
                             </table>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Teknisi 1</label>
-                                <div class="col-sm-9">
-                                    <select name="teknisi[0]" class="form-control">
-                                        <option value="0">Pilih</option>
-                                        <?php
-                                        foreach ($list_support as $value) {
-                                            echo "<option value='".$value->id."'". set_select(
-                                                    'teknisi[0]',$value->id) .">
-                                                    $value->first_name $value->last_name</option>";
-                                        }
-                                        ?>
-                                    </select>
+                            <form class="form-horizontal">
+                            <?php
+
+                            $i = 1;
+                            foreach ($list_support as $value)
+                            {
+                                ?>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Teknisi <?php echo $i; ?></label>
+                                    <div class="col-sm-9">
+                                        <select name="teknisi[0]" class="form-control" >
+                                            <option value="<?php echo $value->id ?>">
+                                                <?php echo $value->first_name. ' ' .$value->last_name; ?>
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Teknisi 2</label>
-                                <div class="col-sm-9">
-                                    <select name="teknisi[1]" class="form-control">
-                                        <option value="0">Pilih</option>
-                                        <?php
-                                        foreach ($list_support as $value) {
-                                            echo "<option value='".$value->id."'". set_select(
-                                                    'teknisi[1]',$value->id) .">
+                            <?php
+                                $i++;
+                            }
+                            echo form_close();
+
+                            echo form_open(current_url(), ['class' => 'form-horizontal']);
+
+                            if ($this->ion_auth->in_group(['manager'])) :
+                            while($i <= 4)
+                            {
+                                ?>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Teknisi <?php echo $i; ?></label>
+                                    <div class="col-sm-9">
+                                        <select name="teknisi[]" class="form-control">
+                                            <option value="0">Pilih</option>
+                                            <?php
+                                            foreach ($available_support as $value) {
+                                                echo "<option value='".$value->id."'". set_select(
+                                                        'teknisi[0]',$value->id) .">
                                                     $value->first_name $value->last_name</option>";
-                                        }
-                                        ?>
-                                    </select>
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Teknisi 3</label>
-                                <div class="col-sm-9">
-                                    <select name="teknisi[2]" class="form-control">
-                                        <option value="0" >Pilih</option>
-                                        <?php
-                                        foreach ($list_support as $value) {
-                                            echo "<option value='".$value->id."'". set_select(
-                                                    'teknisi[2]',$value->id) .">
-                                                    $value->first_name $value->last_name</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Teknisi 4</label>
-                                <div class="col-sm-9">
-                                    <select name="teknisi[3]" class="form-control">
-                                        <option value="0">Pilih</option>
-                                        <?php
-                                        foreach ($list_support as $value) {
-                                            echo "<option value='".$value->id."'". set_select(
-                                                    'teknisi[3]',$value->id) .">
-                                                    $value->first_name $value->last_name</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
+                            <?php
+                                $i++;
+                            }
+
+                            endif;
+                            ?>
+
+
+                            <input type="submit" value="Edit Support" class="btn btn-success pull-right">
+                            <?php
+                                echo form_close();
+                            ?>
                         </div>
-                        <?php echo form_close();?>
 
 <!--                        --><?php //if ($ticket_data->ticket_by == 'by_device') { ?>
 <!--                        <div class="col-lg-4">-->
@@ -229,14 +221,26 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!--                                    --><?php //foreach ($progress_data as $value) {
-                                //                                      echo "<tr><td>$value->tanggal</td><td>$value->progress</td><td>$value->result</td><td>$value->description</td><td>$value->by</td></tr>";
-                                //                                    }
-                                //                                    ?>
+                                    <?php
+                                    if($progress_data)
+                                    {
+                                        foreach ($progress_data as $value) {
+                                            echo "<tr>
+<td>$value->tanggal</td><td>$value->progress</td><td>$value->result</td><td>$value->description</td><td>$value->first_name $value->last_name</td></tr>";
+                                        }
+
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="col-lg-12">
+                            <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"
+                               class="btn btn-success pull-right"> Add Progress</a>
+                        </div>
                     </div>
+
                 </div>
             </div>
             <!-- /.panel-heading -->

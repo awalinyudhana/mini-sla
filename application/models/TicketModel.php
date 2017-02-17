@@ -134,6 +134,20 @@ class TicketModel extends CI_Model
         return $this->db->get()->result();
     }
 
+    public function get_available_support_by_ticket($ticket)
+    {
+        $this->db->select('u.*');
+        $this->db->from('users u');
+        $this->db->join('users_groups ug', 'ug.user_id = u.id','left');
+        $this->db->join('groups g', 'g.id = ug.group_id','left');
+        $this->db->where(
+            'u.id NOT IN (select us.id from users us join ticket_users tu on tu.user_id = us.id where tu.ticket_id='.$ticket.')',
+            null
+        );
+        $this->db->where('g.name', $this->config->item('default_group', 'ion_auth'));
+        return $this->db->get()->result();
+    }
+
     public function get_list_support_by_ticket($ticket)
     {
 

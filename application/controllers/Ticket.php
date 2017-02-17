@@ -145,8 +145,7 @@ class Ticket extends CI_Controller
 
                     if ( ! $this->upload->do_upload('document'))
                     {
-
-
+                        var_dump($this->upload->display_errors());
                         return false;
                     }
 

@@ -83,7 +83,11 @@ class TicketListModel extends CI_Model
 
     public function get_progress_data($ticket_id)
     {
-        $this->db->where('ticket_id', $ticket_id);
+        $this->db->select('*');
+        $this->db->from('ticket_response t');
+        $this->db->join('users u', 'u.id = t.user_id');
+        $this->db->where('t.ticket_id', $ticket_id);
+
         $query = $this->db->get('ticket_response');
         $row = $query->row();
         if (isset($row)) {

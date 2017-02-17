@@ -50,7 +50,8 @@ class Ticket_List extends CI_Controller
 //            if (isset($type) && $type == 'closed') {
 //                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id.'/approve').'" class="btn btn-info">View</a>';
 //            } else if ($item->close_status == 'Open') {
-//                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a> <a href="'.base_url('ticket_list/add_progress/'.$item->ticket_id).'" class="btn btn-success">Add Progress</a>';
+//                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a>
+// <a href="'.base_url('ticket_list/add_progress/'.$item->ticket_id).'" class="btn btn-success">Add Progress</a>';
 //            } else {
                 $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a>';
 //            }
@@ -82,8 +83,18 @@ class Ticket_List extends CI_Controller
 
     public function view($ticket_id, $type = null)
     {
+        $message = null;
+        if($this->input->post()) {
+            $technician_data = array_unique($this->input->post('teknisi'));
+            foreach ($technician_data as $key => $value) {
+                if ($value != 0)
+                    $this->ticket_model->insert_ticket_users($ticket_id, $value);
+            }
+            $message = 'daftar support berhasil di update';
+        }
         $ticket_data = $this->model->get_ticket_data($ticket_id);
         $customer_data = $this->ticket_model->get_customer($ticket_data->customer_id);
+        $available_support = $this->ticket_model->get_available_support_by_ticket($ticket_id);
         $list_support = $this->ticket_model->get_list_support_by_ticket($ticket_id);
         $progress_data = $this->model->get_progress_data($ticket_id);
         if ($ticket_data->boq_detail_id != null) {
@@ -97,7 +108,9 @@ class Ticket_List extends CI_Controller
                 'boq_detail_data' => $boq_detail_data,
                 'progress_data' => $progress_data,
                 'list_support' => $list_support,
+                'available_support' => $available_support,
                 'type' => $type,
+                'message' => $message,
             );
         } else {
             $data = array(
@@ -105,7 +118,9 @@ class Ticket_List extends CI_Controller
                 'customer_data' => $customer_data,
                 'progress_data' => $progress_data,
                 'list_support' => $list_support,
+                'available_support' => $available_support,
                 'type' => $type,
+                'message' => $message,
             );
         }
 
@@ -120,6 +135,8 @@ class Ticket_List extends CI_Controller
     {
         $ticket_data = $this->model->get_ticket_data($ticket_id);
         $customer_data = $this->ticket_model->get_customer($ticket_data->customer_id);
+        $user = $this->db->get_where('users',['id'=>$this->ion_auth->get_user_id()])->row();
+
         $progress_data = $this->model->get_progress_data($ticket_id);
         if ($ticket_data->boq_detail_id != null) {
             $boq_detail_data = $this->ticket_model->get_boq_detail($ticket_data->boq_detail_id);
@@ -131,12 +148,15 @@ class Ticket_List extends CI_Controller
                 'boq_data' => $boq_data,
                 'boq_detail_data' => $boq_detail_data,
                 'progress_data' => $progress_data,
+                'message' => $this->session->flashdata('message'),
+                'user' => $user,
             );
         } else {
             $data = array(
                 'ticket_data' => $ticket_data,
+                'message' => $this->session->flashdata('message'),
                 'customer_data' => $customer_data,
-                'progress_data' => $progress_data,
+                'user' => $user,
             );
         }
 
@@ -150,61 +170,65 @@ class Ticket_List extends CI_Controller
     public function save_progress()
     {
         if (isset($_POST) && !empty($_POST)) {
+            $this->form_validation->set_rules('ticket_id', 'Ticket', 'required');
+            $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
+            $this->form_validation->set_rules('progress', 'Progress', 'required');
+            $this->form_validation->set_rules('result', 'Result', 'required');
+            $this->form_validation->set_rules('description', 'Deskripsi', 'required');
+
+            if ($this->form_validation->run() === FALSE) {
+                $this->session->set_flashdata('message', validation_errors());
+                redirect('ticket_list/add_progress/'.$this->input->post('ticket_id'));
+            }
             $response_form_data = array(
                 'ticket_id' => $this->input->post('ticket_id'),
                 'tanggal' => $this->input->post('tanggal').' '.date("H:i:s"),
                 'progress' => $this->input->post('progress'),
                 'result' => $this->input->post('result'),
                 'description' => $this->input->post('description'),
-                'by' => 0,
+                'user_id' => $this->ion_auth->get_user_id(),
             );
 
             $this->model->save_progress($response_form_data);
 
             // If Close Ticket
             if ($this->input->post('submit_type') == 'close_ticket') {
-                if(!empty($_FILES['response_documents']['name'])) {
-                    $files_count = count($_FILES['response_documents']['name']);
-                    $file_item = $_FILES['response_documents'];
-                    for ($i = 0; $i < $files_count; $i++) {
-                        $_FILES['document']['name'] = $file_item['name'][$i];
-                        $_FILES['document']['type'] = $file_item['type'][$i];
-                        $_FILES['document']['tmp_name'] = $file_item['tmp_name'][$i];
-                        $_FILES['document']['error'] = $file_item['error'][$i];
-                        $_FILES['document']['size'] = $file_item['size'][$i];
+                $file_name = null;
+                if ($_FILES['document']['size'] > 0 && !empty($_FILES['document']['name']))
+                {
+                    $config['upload_path']          = './uploads/tickets/';
+                    $config['allowed_types']        = '*';
+                    $config['max_size']             = 8062;
+                    $config['overwrite']             = false;
 
-                        if (isset($_FILES['document']['size']) && ($_FILES['document']['size'] > 0)) {
-                            $upload_path = './uploads/response_tickets';
-                            $config['upload_path'] = $upload_path;
-                            $config['allowed_types'] = 'gif|jpg|png';
-                            $config['max_size'] = '8192';
-                            $config['encrypt_name'] = true;
+                    $this->load->library('upload', $config);
 
-                            $this->load->library('upload', $config);
-                            $this->upload->initialize($config);
-                            if ($this->upload->do_upload('document') === false )
-                                return [
-                                    'status' => false,
-                                    'message' => $this->upload->display_errors()
-                                ];
+                    if ( ! $this->upload->do_upload('document'))
+                    {
 
-                            $file_data = $this->upload->data();
-                            $uploaded_data[$i] = $file_data['file_name'];
-                        }
+                        $this->session->set_flashdata('message', $this->upload->display_errors());
+                        redirect('ticket_list/add_progress/'.$this->input->post('ticket_id'));
+                        return false;
                     }
+
+                    $file_name = $this->upload->data()['file_name'];
+
                 }
 
                 $ticket_form_data = array(
                     'close_status' => 'Closed',
                     'close_date' => date('Y-m-d'),
-                    'report_attachment' =>implode(";", $uploaded_data),
+                    'report_attachment' =>$file_name,
                 );
 
                 $this->ticket_model->update_ticket($this->input->post('ticket_id'), $ticket_form_data);
+                redirect(base_url('ticket_list/'));
             }
 
-            redirect(base_url('ticket_list'));
+
+            redirect(base_url('ticket_list/view/'.$this->input->post('ticket_id')));
         }
+        redirect(base_url('ticket_list'));
     }
 
     public function closed()
