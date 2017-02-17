@@ -84,7 +84,17 @@
                                     </select>
                                 </div>
                             </div>
-                            <div id="boqDetail"></div>
+                            <div id="boqDetail">
+                            <?php
+                                if(isset($boq_detail_form_data) && $boq_detail_form_data != false) {
+                                    foreach ($boq_detail_form_data as $key => $value) {
+                                        $boq_detail_item = explode(";", $value);
+                                        $index = $key+1;
+                                        echo "<input type='hidden' name='boq_detail[]' id='input-boq-detail-$index' value='$boq_detail_item[0];$boq_detail_item[1];$boq_detail_item[2];$boq_detail_item[3]'>";
+                                    }
+                                }
+                            ?>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -109,6 +119,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php
+                                    if(isset($boq_detail_form_data) && $boq_detail_form_data != false) {
+                                        foreach ($boq_detail_form_data as $key => $value) {
+                                            $boq_detail_item = explode(";", $value);
+                                            $index = $key+1;
+                                            echo "<tr id='row-boq-detail-$index'><td>$index</td><td>$boq_detail_item[3]</td><td>$boq_detail_item[1]</td><td>$boq_detail_item[2]</td><td><a href='javascript:;' class='btn btn-danger hapus-detail-boq' data-id='$index'>Hapus</a></td></tr>";
+                                        }
+                                    }
+                                ?>
                                 </tbody>
                             </table>
                         </div>
@@ -163,6 +182,7 @@
             <h4 class="modal-title" id="modalSerialLabel">Isi Keterangan</h4>
           </div>
           <div class="modal-body">
+            <div id="modalSerialError"></div>
             <div class="form-group">
             <label for="recipient-name" class="control-label">Serial Number:</label>
             <input type="text" class="form-control" id="serialNumber">
@@ -173,7 +193,7 @@
           </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-info" data-dismiss="modal" id="modalSerialCloseButton">Simpan</button>
+            <button type="button" class="btn btn-info" id="modalSerialCloseButton">Simpan</button>
           </div>
         </div>
       </div>

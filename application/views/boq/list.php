@@ -19,7 +19,7 @@
                         <div class="col-lg-12">
                             <?php if (isset($message)) {
                                 ?>
-                                <div class="alert alert-warning"><?php echo $message; ?></div>
+                                <div class="alert alert-warning alert-dismissible"><?php echo $message; ?></div>
                                 <?php
                             } ?>
 
