@@ -95,6 +95,16 @@ class BoqModel extends CI_Model
         return $this->db->count_all_results();
     }
 
+    public function check_serial_number($serial_number)
+    {
+        $query = $this->db->get_where('boq_detail', array('serial_number' => $serial_number));
+        $row = $query->row();
+        if (isset($row)) {
+            return true;
+        }
+            return false;
+    }
+
     public function add_boq($data)
     {
         $this->db->trans_start();
