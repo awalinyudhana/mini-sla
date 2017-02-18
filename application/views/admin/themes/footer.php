@@ -51,6 +51,11 @@ modalCloseTicketButton.on('click', function() {
     $("#ticket_add_progress").submit();
 });
 
+var modalDeclineTicketButton = $('#modalDeclineTicketButton');
+modalDeclineTicketButton.on('click', function() {
+    $("#ticket_decline_ticket").submit();
+});
+
 var table;
 var datatable_url;
 $(document).ready(function() {
@@ -84,6 +89,10 @@ $(document).ready(function() {
 });
 
 $('#confirm-delete').on('show.bs.modal', function(e) {
+    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+});
+
+$('#confirm-approve').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 });
 </script>
