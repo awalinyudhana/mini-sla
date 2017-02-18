@@ -37,7 +37,9 @@
                                         <th>Request By</th>
                                         <th>Tech. Status</th>
                                         <th>Lead Approval</th>
-                                        <th>Aksi</th>
+                                        <?php if (isset($type) && $type == 'hasaction') { ?>
+                                            <th>Aksi</th>
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody>

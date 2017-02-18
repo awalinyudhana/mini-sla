@@ -54,6 +54,10 @@
                                 <i class="fa fa-ticket fa-fw"></i>Daftar Ticket</a>
                         </li>
                     <?php endif; ?>
+                    <li>
+                        <a href="<?php echo base_url('ticket_list/all')?>">
+                            <i class="fa fa-ticket fa-fw"></i>Daftar Semua Ticket</a>
+                    </li>
                 </ul>
             </li>
         </ul>

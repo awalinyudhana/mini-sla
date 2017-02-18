@@ -24,6 +24,20 @@ class Ticket_List extends CI_Controller
     {
         $data = array(
             'title' => 'List Ticket',
+            'table_url' => base_url('ticket_list/ajax_list/hasaction'),
+            'type' => 'hasaction',
+        );
+
+        $this->load->view('admin/themes/header');
+        $this->load->view('admin/themes/nav');
+        $this->load->view('admin/themes/sidebar');
+        $this->load->view('ticket/list', $data);
+        $this->load->view('admin/themes/footer');
+    }
+
+    public function all() {
+        $data = array(
+            'title' => 'List All Tickets',
             'table_url' => base_url('ticket_list/ajax_list'),
         );
 
@@ -34,12 +48,16 @@ class Ticket_List extends CI_Controller
         $this->load->view('admin/themes/footer');
     }
 
-    public function ajax_list($type = null)
+    public function ajax_list($type = null, $support_user_id = null)
     {
+        if ($this->ion_auth->in_group(['support']) && !$this->ion_auth->in_group(['manager'])) {
+            $support_user_id = $this->ion_auth->get_user_id();
+        }
+
         if (isset($type) && $type == 'closed') {
-            $list = $this->model->get_datatables('closed');
+            $list = $this->model->get_datatables('closed', $support_user_id);
         } else {
-            $list = $this->model->get_datatables();
+            $list = $this->model->get_datatables(null, $support_user_id);
         }
         $data = array();
         $no = $_POST['start'];
@@ -66,22 +84,25 @@ class Ticket_List extends CI_Controller
             $row[] = $item->request_by;
             $row[] = $item->close_status;
             $row[] = $item->approved_status;
-            $row[] = $action;
+
+            if ($type == 'hasaction') {
+                $row[] = $action;
+            }
 
             $data[] = $row;
         }
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->model->count_all(),
-            "recordsFiltered" => $this->model->count_filtered(),
+            "recordsTotal" => $this->model->count_all($type, $support_user_id),
+            "recordsFiltered" => $this->model->count_filtered($type, $support_user_id),
             "data" => $data,
         );
 
         echo json_encode($output);
     }
 
-    public function view($ticket_id, $type = null)
+    public function view($ticket_id)
     {
         $message = null;
         if($this->input->post()) {
@@ -109,7 +130,6 @@ class Ticket_List extends CI_Controller
                 'progress_data' => $progress_data,
                 'list_support' => $list_support,
                 'available_support' => $available_support,
-                'type' => $type,
                 'message' => $message,
             );
         } else {
@@ -119,7 +139,6 @@ class Ticket_List extends CI_Controller
                 'progress_data' => $progress_data,
                 'list_support' => $list_support,
                 'available_support' => $available_support,
-                'type' => $type,
                 'message' => $message,
             );
         }
@@ -254,5 +273,16 @@ class Ticket_List extends CI_Controller
 
         $this->ticket_model->update_ticket($ticket_id, $ticket_form_data);
         redirect(base_url('ticket_list/closed'));
+    }
+
+    public function decline_ticket() {
+        $ticket_form_data = array(
+            'close_status' => 'Open',
+            'close_date' => null,
+            'note' => $this->input->post('note'),
+        );
+
+        $this->ticket_model->update_ticket($this->input->post('ticket_id'), $ticket_form_data);
+        redirect(base_url('ticket_list'));
     }
 }

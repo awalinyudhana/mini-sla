@@ -81,6 +81,13 @@
                                     </td>
                                     <td><?php echo $ticket_data->deskripsi; ?></td>
                                 </tr>
+                                <?php if (isset($ticket_data->note)) { ?>
+                                <tr>
+                                    <td><strong>Note</strong>
+                                    </td>
+                                    <td style="color: #FF4136;"><?php echo $ticket_data->note; ?></td>
+                                </tr>
+                                <?php } ?>
                             </table>
                         </div>
                         <div class="col-lg-6" style="margin-top: 20px !important;">
@@ -236,6 +243,39 @@
                         </div>
 
                         <div class="col-lg-12">
+                            <?php 
+                                if ($this->ion_auth->in_group(['manager'])) {
+                                    echo '<a href="javascript:;" data-href="'.base_url('ticket_list/approve_ticket/'.$ticket_data->ticket_id).'" data-toggle="modal" data-target="#confirm-approve" class="btn btn-success pull-right margin-left-10">Approve Ticket</a>'; 
+
+                                    echo '<button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalDecline">Decline Ticket</button>';
+
+                                    echo form_open('ticket_list/decline_ticket', ['class' => 'form-horizontal', 'id' => 'ticket_decline_ticket']);
+                            ?>
+                                    <div class="modal" id="modalDecline" tabindex="-1" role="dialog" aria-labelledby="modalDeclineLabel">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="modalDeclineLabel">Decline Ticket Note</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <input type="hidden" name="ticket_id" value="<?php echo $ticket_data->ticket_id; ?>">
+                                                    <textarea class="form-control" name="note"></textarea>
+                                                </div>
+                                            </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalDeclineTicketButton">Decline Ticket</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                            <?php
+                                }
+                            ?>
+
                             <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"
                                class="btn btn-success pull-right"> Add Progress</a>
                         </div>
@@ -248,4 +288,22 @@
         </div>
         <!-- /.panel -->
     </div>
+
+    <div class="modal fade" id="confirm-approve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Konfirmasi Approve Ticket
+                </div>
+                <div class="modal-body">
+                    <p>Apakah anda yakin menyetujui tiket ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <a class="btn btn-success btn-ok">Approve Ticket</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
