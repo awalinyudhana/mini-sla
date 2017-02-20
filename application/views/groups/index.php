@@ -38,10 +38,7 @@
                                         <td><?php echo htmlspecialchars($group->description, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
                                             <?php //echo anchor("groups/edit/" . $group->id, 'Edit', "class='btn btn-warning'"); ?>
-<<<<<<< HEAD
-=======
-<!--                                            --><?php //echo anchor("groups/delete/" . $group->id, 'Delete', "class='btn btn-danger'"); ?>
->>>>>>> 1541ee6c48b40385aed75211b8b6c8bbaafdc8df
+
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
