@@ -48,8 +48,10 @@ class Groups extends CI_Controller
         $this->form_validation->set_rules('group_name', $this->lang->line('create_group_validation_name_label'),
             'required|alpha_dash');
         if ($this->form_validation->run() == TRUE) {
-            $new_group_id = $this->ion_auth->create_group($this->input->post('group_name'),
-                $this->input->post('description'));
+            $new_group_id = $this->ion_auth->create_group(
+                strtolower($this->input->post('group_name')),
+                $this->input->post('description')
+            );
             if ($new_group_id) {
                 //check to see if we are creating group
                 //redirect them back to the admin page
