@@ -29,7 +29,7 @@
                         <div class="col-lg-6">
                             <table class="boq-customer">
                                 <input type="hidden" name="customer_id" value="<?php echo $customer_data->customer_id; ?>">
-                                <tr><td class="title"><strong>Customer Name</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
+                                <tr><td class="title"><strong>Nama Customer</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
                                 <tr><td class="title"><strong>Alamat</strong></td><td><?php echo $customer_data->alamat; ?></td></tr>
                                 <tr><td class="title"><strong>Kota - Provinsi</strong></td><td><?php echo $customer_data->kota.' - '.$customer_data->provinsi ; ?></td></tr>
                                 <tr><td class="title"><strong>PIC - Kontak</strong></td><td><?php echo $customer_data->pic.' - '.$customer_data->kontak ; ?></td></tr>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-lg-6 pull-right">
                             <div class="form-group">
-                                <label class="col-sm-6 control-label">Start Date of Support</label>
+                                <label class="col-sm-6 control-label">Tanggal Mulai Support</label>
                                 <div class="col-sm-6">
                                     <div class="input-group date datepicker" data-provide="datepicker">
                                         <input type="text" class="form-control"
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-6 control-label">End Date of Support</label>
+                                <label class="col-sm-6 control-label">Tanggal Akhir Support</label>
                                 <div class="col-sm-6">
                                     <div class="input-group date datepicker" data-provide="datepicker">
                                         <input type="text" class="form-control"
@@ -64,7 +64,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-6 control-label">No Purchase</label>
+                               <!-- <label class="col-sm-6 control-label">No Purchase</label> -->
+                                <label class="col-sm-6 control-label">No. Pembayaran</label>
                                 <div class="col-sm-6">
                                     <input name="purchase_order"
                                            value="<?php echo set_value('purchase_order'); ?>"

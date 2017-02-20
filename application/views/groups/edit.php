@@ -12,7 +12,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Edit Group Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Edit Group Pengguna Sistem
                 </div>
 
                 <div class="panel-body">

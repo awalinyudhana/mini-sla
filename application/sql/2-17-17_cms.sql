@@ -41,7 +41,6 @@ CREATE TABLE `boq` (
   CONSTRAINT `boq_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `boq` WRITE;
 /*!40000 ALTER TABLE `boq` DISABLE KEYS */;
 
 INSERT INTO `boq` (`boq_id`, `tanggal_add`, `purchase_order`, `start_date_of_support`, `end_date_of_support`, `service_level_id`, `customer_id`, `user_id`)
@@ -50,7 +49,6 @@ VALUES
 	(9,'2017-02-14 16:30:19','12346','2017-02-14','2017-02-17',2,2,1);
 
 /*!40000 ALTER TABLE `boq` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table boq_detail
@@ -71,7 +69,6 @@ CREATE TABLE `boq_detail` (
   CONSTRAINT `boq_detail_ibfk_3` FOREIGN KEY (`perangkat_id`) REFERENCES `perangkat` (`perangkat_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `boq_detail` WRITE;
 /*!40000 ALTER TABLE `boq_detail` DISABLE KEYS */;
 
 INSERT INTO `boq_detail` (`boq_detail_id`, `boq_id`, `perangkat_id`, `serial_number`, `deskripsi`)
@@ -82,7 +79,6 @@ VALUES
 	(11,9,8,'0987654','testing');
 
 /*!40000 ALTER TABLE `boq_detail` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table customer
@@ -103,7 +99,6 @@ CREATE TABLE `customer` (
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
 
 INSERT INTO `customer` (`customer_id`, `nama_customer`, `alamat`, `kota`, `provinsi`, `kode_pos`, `pic`, `kontak`, `email`)
@@ -112,7 +107,6 @@ VALUES
 	(2,'PT Paramite Inovasi Teknologi','Jalan Jombang 16','Malang','Jawa Timur','65115','I Putu Sudarma','081336661922','i.putu@gmail.com');
 
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table groups
@@ -127,7 +121,6 @@ CREATE TABLE `groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `groups` WRITE;
 /*!40000 ALTER TABLE `groups` DISABLE KEYS */;
 
 INSERT INTO `groups` (`id`, `name`, `description`)
@@ -139,7 +132,6 @@ VALUES
 	(6,'bod','BoQ');
 
 /*!40000 ALTER TABLE `groups` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table login_attempts
@@ -173,7 +165,6 @@ CREATE TABLE `perangkat` (
   PRIMARY KEY (`perangkat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `perangkat` WRITE;
 /*!40000 ALTER TABLE `perangkat` DISABLE KEYS */;
 
 INSERT INTO `perangkat` (`perangkat_id`, `part_number`, `brand`, `nama_perangkat`, `type`, `status`, `hyperlink`)
@@ -183,7 +174,6 @@ VALUES
 	(10,'CTS-SX10N-K1','Cisco','Cisco SX-10','Hardware','Active','https://www.facebook.com');
 
 /*!40000 ALTER TABLE `perangkat` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table service_level
@@ -205,7 +195,6 @@ CREATE TABLE `service_level` (
   PRIMARY KEY (`service_level_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `service_level` WRITE;
 /*!40000 ALTER TABLE `service_level` DISABLE KEYS */;
 
 INSERT INTO `service_level` (`service_level_id`, `service_level`, `mom`, `bom`, `doc`, `demo`, `installation`, `maintenance`, `support`, `sla`)
@@ -215,7 +204,6 @@ VALUES
 	(4,'Silver','4','5','1','6','3','2','2',3);
 
 /*!40000 ALTER TABLE `service_level` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table ticket
@@ -246,7 +234,6 @@ CREATE TABLE `ticket` (
   CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
 
 INSERT INTO `ticket` (`ticket_id`, `ticket_by`, `boq_detail_id`, `customer_id`, `user_id`, `tanggal`, `judul`, `request_by`, `category`, `document`, `deskripsi`, `close_status`, `close_date`, `approved_status`, `approved_date`, `report_attachment`, `note`)
@@ -256,7 +243,6 @@ VALUES
 	(7,'by_customer',NULL,2,1,'2017-02-15 00:00:00','Document Ticket','Awalin','Doc','Screen_Shot_2017-01-23_at_00_27_28.png','Testing','Open',NULL,'Waiting',NULL,NULL,NULL);
 
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table ticket_response
@@ -295,7 +281,6 @@ CREATE TABLE `ticket_users` (
   CONSTRAINT `ticket_users_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `ticket_users` WRITE;
 /*!40000 ALTER TABLE `ticket_users` DISABLE KEYS */;
 
 INSERT INTO `ticket_users` (`id`, `ticket_id`, `user_id`)
@@ -306,7 +291,6 @@ VALUES
 	(11,7,5);
 
 /*!40000 ALTER TABLE `ticket_users` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table users
@@ -335,7 +319,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`)
@@ -348,7 +331,6 @@ VALUES
 	(6,'127.0.0.1','123454','$2y$08$vTrB8p.17I/Assk02rCGyeJ7QDr5Js8GPU11WiZLRcFI4Ti4R8v6u',NULL,'riesma.hamdan@gmail.com',NULL,NULL,NULL,NULL,1487050804,NULL,1,'Risema','Hamdan',NULL,NULL);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table users_groups
@@ -368,7 +350,6 @@ CREATE TABLE `users_groups` (
   CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `users_groups` WRITE;
 /*!40000 ALTER TABLE `users_groups` DISABLE KEYS */;
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`)
@@ -391,7 +372,6 @@ VALUES
 	(27,6,3);
 
 /*!40000 ALTER TABLE `users_groups` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 

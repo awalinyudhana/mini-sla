@@ -27,7 +27,8 @@ class Ticket extends CI_Controller
     public function by_device()
     {
         $data = array(
-            'title' => 'New Ticket By Device For Technical',
+            //'title' => 'New Ticket By Device For Technical',
+            'title' => 'Tiket Baru berdasarkan Device untuk pihak Technical',
             'type' => 'by_device',
             'table_url' => base_url('ticket/ajax_detail_list'),
         );
@@ -73,7 +74,8 @@ class Ticket extends CI_Controller
     public function by_customer()
     {
         $data = array(
-            'title' => 'New Ticket By Customer For Technical',
+            //'title' => 'New Ticket By Customer For Technical',
+            'title' => 'Tiket Baru Customer Untuk Pihak Technical',
             'type' => 'by_customer',
             'table_url' => base_url('ticket/ajax_customer_list'),
         );
@@ -213,7 +215,8 @@ class Ticket extends CI_Controller
             $customer_data = $this->model->get_customer($customer_id);
         }
 
-        $data['title'] = 'New Ticket';
+        //$data['title'] = 'New Ticket';
+        $data['title'] = 'Tiket Baru';
         $data['type'] = $type;
         $data['customer_data'] = $customer_data;
 

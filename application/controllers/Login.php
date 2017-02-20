@@ -20,6 +20,8 @@ class Login extends CI_Controller
             }
         }
 
+
+
     }
 
     // log the user in
@@ -33,7 +35,7 @@ class Login extends CI_Controller
             echo "Admin User ";
             //set the flash data error message if there is one
             //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            redirect('AdminDashboard', 'refresh');
+            redirect('groups', 'refresh');
         } elseif ($this->ion_auth->in_group("technical_manager")) {
             //redirect to technical manager controller
             redirect('TechnicalManager', 'refresh');

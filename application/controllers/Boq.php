@@ -226,7 +226,8 @@ class Boq extends CI_Controller
         $customer_data = $this->model->get($customer_id);
         $service_level_data = $this->model->get_service_level();
 
-        $data['title'] = 'New Boq Detail';
+        //$data['title'] = 'New Boq Detail';
+        $data['title'] = 'Detail BoQ Baru';
         $data['customer_data'] = $customer_data;
         $data['service_level_data'] = $service_level_data;
         $data['perangkat_table_url'] = base_url('perangkat/ajax_list/modal');

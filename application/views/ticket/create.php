@@ -35,11 +35,11 @@
                         <?php if ($type == 'by_device') { ?>
                         <div class="col-lg-6">
                             <table class="boq-customer pull-right">
-                                <tr><td class="title"><strong>Staff Name</strong></td><td><?php echo $user_data->first_name.' '.$user_data->last_name; ?></td></tr>
+                                <tr><td class="title"><strong>Nama Staff</strong></td><td><?php echo $user_data->first_name.' '.$user_data->last_name; ?></td></tr>
                                 <tr><td class="title"><strong>Serial Number</strong></td><td><?php echo $boq_detail_data->serial_number; ?></td></tr>
                                 <tr><td class="title"><strong>Nama Perangkat</strong></td><td><?php echo $boq_detail_data->nama_perangkat; ?></td></tr>
-                                <tr><td class="title"><strong>Start Date of Support</strong></td><td><?php echo $boq_data->start_date_of_support; ?></td></tr>
-                                <tr><td class="title"><strong>End Date of Support</strong></td><td><?php echo $boq_data->end_date_of_support; ?></td></tr>
+                                <tr><td class="title"><strong>Tanggal Mulai Support</strong></td><td><?php echo $boq_data->start_date_of_support; ?></td></tr>
+                                <tr><td class="title"><strong>Tanggal Akhir Support</strong></td><td><?php echo $boq_data->end_date_of_support; ?></td></tr>
                             </table>
                         </div>
                         <?php } ?>
@@ -70,7 +70,7 @@
                             </div>
                             <?php if ($type == 'by_device') { ?>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Category</label>
+                                <label class="col-sm-3 control-label">Kategori</label>
                                 <div class="col-sm-9">
                                     <select name="category" class="form-control">
                                         <option value="Installation"
@@ -88,7 +88,7 @@
                             </div>
                             <?php } else if ($type == 'by_customer') { ?>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Category</label>
+                                <label class="col-sm-3 control-label">Kategori</label>
                                 <div class="col-sm-9">
                                     <select name="category" class="form-control">
                                         <option value="MoM"
@@ -109,7 +109,7 @@
                             <?php } ?>
                             
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Upload Supporting Document</label>
+                                <label class="col-sm-3 control-label">Upload Dokumen Pendukung</label>
                                 <div class="col-sm-9">
                                     <input type="file" class="form-control" name="document" multiple>
                                 </div>
