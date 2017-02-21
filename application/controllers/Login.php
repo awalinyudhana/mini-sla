@@ -7,9 +7,8 @@ class Login extends CI_Controller
     {
         parent::__construct();
         if ($this->ion_auth->logged_in()) {
-            //redirect('AdminDashboard');
-            if ($this->ion_auth->is_admin()) {
-                echo "Admin User ";
+            redirect('Users');
+           /* if ($this->ion_auth->is_admin()) {
                 //set the flash data error message if there is one
                 //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
                 redirect('users', 'refresh');
@@ -17,10 +16,8 @@ class Login extends CI_Controller
             else
             {
                 redirect('dashboard', 'refresh');
-            }
+            }*/
         }
-
-
 
     }
 
@@ -31,24 +28,27 @@ class Login extends CI_Controller
         /*if (!$this->ion_auth->logged_in()) {
             redirect('Login','refresh');
         } else*/
-        if ($this->ion_auth->is_admin()) {
+
+        ///skema hak akses di bedakan melalui menu sidebar
+        //maka hanya perlu cek apakah sudah log in, tidak berdasarkan group
+        /*if ($this->ion_auth->is_admin()) {
             echo "Admin User ";
             //set the flash data error message if there is one
             //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            redirect('groups', 'refresh');
-        } elseif ($this->ion_auth->in_group("technical_manager")) {
+            redirect('users', 'refresh');
+        } elseif ($this->ion_auth->in_group("manager")) {
             //redirect to technical manager controller
             redirect('TechnicalManager', 'refresh');
-        } elseif ($this->ion_auth->in_group("technical")) {
+        } elseif ($this->ion_auth->in_group("support")) {
             //redirect to technical controller
             redirect('Technical', 'refresh');
         } elseif ($this->ion_auth->in_group("sales")) {
             //redirect to sales controller
             redirect('Sales', 'refresh');
-        } elseif ($this->ion_auth->in_group("BOQ")) {
+        } elseif ($this->ion_auth->in_group("boq")) {
             //redirect to boq controller
             redirect('Boq', 'refresh');
-        }
+        }*/
 
         //validate form input
         $this->form_validation->set_rules(
@@ -69,7 +69,7 @@ class Login extends CI_Controller
                 //if the login is successful
                 //redirect them back to the home page
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('/', 'refresh');
+                redirect('users', 'refresh');
             } else {
                 // if the login was un-successful
                 // redirect them back to the login page

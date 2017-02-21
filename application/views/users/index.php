@@ -22,7 +22,10 @@
                                 <div class="alert alert-warning"><?php echo $message; ?></div>
                                 <?php
                             } ?>
-
+                        <?php
+                            // MENU UTAMA adalah list user hanya utk admin
+                            if ($this->ion_auth->in_group('admin')) :
+                        ?>
                             <p align="right">
                                 <?php echo anchor('users/create', 'Tambah Pengguna Baru', "class='btn btn-success'") ?>
                             </p>
@@ -94,6 +97,7 @@
                                 </tbody>
 
                             </table>
+                        <?php endif; ?>
                         </div>
                     </div>
                     <!-- /.row -->

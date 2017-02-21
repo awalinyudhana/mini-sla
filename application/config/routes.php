@@ -52,6 +52,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-
+$route['service_level'] = 'Service_Level';
+$route['service_level/ajax_list'] = 'Service_Level/ajax_list';
+$route['ticket_list'] = 'Ticket_List';
+$route['ticket_list/ajax_list'] = 'Ticket_List/ajax_list';
+$route['ticket_list/all'] = 'Ticket_List/all';
+$route['service_level'] = 'Service_Level';
+$route['service_level/create'] = 'Service_Level/create';
+$route['service_level/update/(:num)'] = 'Service_Level/update/$1';
 $route['login'] = 'login';
 $route['logout'] = 'logout';

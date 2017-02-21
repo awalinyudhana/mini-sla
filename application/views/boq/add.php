@@ -113,7 +113,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Part Number</th>
+                                        <th>Nomor Perangkat</th>
                                         <th>Serial Number</th>
                                         <th>Deskripsi</th>
                                         <th>Aksi</th>
@@ -155,10 +155,10 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Part Number</th>
-                        <th>Brand</th>
+                        <th>Nomor Perangkat</th>
+                        <th>Merk</th>
                         <th>Nama Perangkat</th>
-                        <th>Type</th>
+                        <th>Tipe</th>
                         <th>Status</th>
                         <th>Detail</th>
                         <th>Aksi</th>

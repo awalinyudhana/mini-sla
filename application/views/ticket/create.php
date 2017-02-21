@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <table class="boq-customer">
-                                <tr><td class="title"><strong>Customer Name</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
+                                <tr><td class="title"><strong>Nama Customer</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
                                 <tr><td class="title"><strong>Alamat</strong></td><td><?php echo $customer_data->alamat; ?></td></tr>
                                 <tr><td class="title"><strong>Kota - Provinsi</strong></td><td><?php echo $customer_data->kota.' - '.$customer_data->provinsi ; ?></td></tr>
                                 <tr><td class="title"><strong>PIC - Kontak</strong></td><td><?php echo $customer_data->pic.' - '.$customer_data->kontak ; ?></td></tr>
