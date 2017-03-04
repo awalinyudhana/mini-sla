@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Daftar Group Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Daftar Group Pengguna Sistem
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -37,8 +37,8 @@
                                         <td><?php echo htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($group->description, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
-                                            <?php echo anchor("groups/edit/" . $group->id, 'Edit', "class='btn btn-warning'"); ?>
-<!--                                            --><?php //echo anchor("groups/delete/" . $group->id, 'Delete', "class='btn btn-danger'"); ?>
+                                            <?php //echo anchor("groups/edit/" . $group->id, 'Edit', "class='btn btn-warning'"); ?>
+
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

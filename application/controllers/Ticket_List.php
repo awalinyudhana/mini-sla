@@ -24,7 +24,7 @@ class Ticket_List extends CI_Controller
     {
         $data = array(
             'title' => 'List Ticket',
-            'table_url' => base_url('ticket_list/ajax_list/hasaction'),
+            'table_url' => base_url('Ticket_List/ajax_list/hasaction'),
             'type' => 'hasaction',
         );
 
@@ -38,7 +38,7 @@ class Ticket_List extends CI_Controller
     public function all() {
         $data = array(
             'title' => 'List All Tickets',
-            'table_url' => base_url('ticket_list/ajax_list'),
+            'table_url' => base_url('Ticket_List/ajax_list'),
         );
 
         $this->load->view('admin/themes/header');
@@ -71,7 +71,7 @@ class Ticket_List extends CI_Controller
 //                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a>
 // <a href="'.base_url('ticket_list/add_progress/'.$item->ticket_id).'" class="btn btn-success">Add Progress</a>';
 //            } else {
-                $action = '<a href="'.base_url('ticket_list/view/'.$item->ticket_id).'" class="btn btn-info">View</a>';
+                $action = '<a href="'.base_url('Ticket_List/view/'.$item->ticket_id).'" class="btn btn-info">View</a>';
 //            }
 
             $row[] = $no;
@@ -197,7 +197,7 @@ class Ticket_List extends CI_Controller
 
             if ($this->form_validation->run() === FALSE) {
                 $this->session->set_flashdata('message', validation_errors());
-                redirect('ticket_list/add_progress/'.$this->input->post('ticket_id'));
+                redirect('Ticket_List/add_progress/'.$this->input->post('ticket_id'));
             }
             $response_form_data = array(
                 'ticket_id' => $this->input->post('ticket_id'),
@@ -226,7 +226,7 @@ class Ticket_List extends CI_Controller
                     {
 
                         $this->session->set_flashdata('message', $this->upload->display_errors());
-                        redirect('ticket_list/add_progress/'.$this->input->post('ticket_id'));
+                        redirect('Ticket_List/add_progress/'.$this->input->post('ticket_id'));
                         return false;
                     }
 
@@ -241,20 +241,20 @@ class Ticket_List extends CI_Controller
                 );
 
                 $this->ticket_model->update_ticket($this->input->post('ticket_id'), $ticket_form_data);
-                redirect(base_url('ticket_list/'));
+                redirect(base_url('Ticket_List/'));
             }
 
 
-            redirect(base_url('ticket_list/view/'.$this->input->post('ticket_id')));
+            redirect(base_url('Ticket_List/view/'.$this->input->post('ticket_id')));
         }
-        redirect(base_url('ticket_list'));
+        redirect(base_url('Ticket_List'));
     }
 
     public function closed()
     {
         $data = array(
             'title' => 'List Ticket',
-            'table_url' => base_url('ticket_list/ajax_list/closed'),
+            'table_url' => base_url('Ticket_List/ajax_list/closed'),
         );
 
         $this->load->view('admin/themes/header');
@@ -272,7 +272,7 @@ class Ticket_List extends CI_Controller
         );
 
         $this->ticket_model->update_ticket($ticket_id, $ticket_form_data);
-        redirect(base_url('ticket_list/closed'));
+        redirect(base_url('Ticket_List/closed'));
     }
 
     public function decline_ticket() {
@@ -283,6 +283,6 @@ class Ticket_List extends CI_Controller
         );
 
         $this->ticket_model->update_ticket($this->input->post('ticket_id'), $ticket_form_data);
-        redirect(base_url('ticket_list'));
+        redirect(base_url('Ticket_List'));
     }
 }

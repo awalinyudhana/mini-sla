@@ -30,7 +30,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <table class="boq-customer">
-                                <tr><td class="title"><strong>Customer Name</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
+                                <tr><td class="title"><strong>Nama Customer</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
                                 <tr><td class="title"><strong>Alamat</strong></td><td><?php echo $customer_data->alamat; ?></td></tr>
                                 <tr><td class="title"><strong>Kota - Provinsi</strong></td><td><?php echo $customer_data->kota.' - '.$customer_data->provinsi ; ?></td></tr>
                                 <tr><td class="title"><strong>PIC - Kontak</strong></td><td><?php echo $customer_data->pic.' - '.$customer_data->kontak ; ?></td></tr>
@@ -44,8 +44,8 @@
                                 <tr><td class="title"><strong>Tanggal Trans.</strong></td><td><?php echo $boq_data->tanggal_add; ?></td></tr>
                                 <tr><td class="title"><strong>Staff</strong></td><td><?php echo $boq_data->first_name.' '.$boq_data->last_name; ?></td></tr>
                                 <tr><td class="title"><strong>Service Level</strong></td><td><?php echo $boq_data->service_level; ?></td></tr>
-                                <tr><td class="title"><strong>Start Date of Support</strong></td><td><?php echo $boq_data->start_date_of_support; ?></td></tr>
-                                <tr><td class="title"><strong>End Date of Support</strong></td><td><?php echo $boq_data->end_date_of_support; ?></td></tr>
+                                <tr><td class="title"><strong>Tanggal Mulai Support</strong></td><td><?php echo $boq_data->start_date_of_support; ?></td></tr>
+                                <tr><td class="title"><strong>Tanggal Akhir Support</strong></td><td><?php echo $boq_data->end_date_of_support; ?></td></tr>
                             </table>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Part Number</th>
+                                        <th>Nomor Perangkat</th>
                                         <th>Serial Number</th>
                                         <th>Deskripsi</th>
                                     </tr>

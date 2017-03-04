@@ -35,7 +35,7 @@
                             ?>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Part Number</label>
+                                <label class="col-sm-2 control-label">Nomor Perangkat</label>
                                 <div class="col-sm-6">
                                     <input name="part_number"
                                            value="<?php echo set_value('part_number',
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Brand</label>
+                                <label class="col-sm-2 control-label">Merk</label>
                                 <div class="col-sm-6">
                                     <input name="brand"
                                            value="<?php echo set_value('brand',
@@ -65,7 +65,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Type</label>
+                                <label class="col-sm-2 control-label">Tipe</label>
                                 <div class="col-sm-6">
                                     <select name="type">
                                         <option value="Hardware"

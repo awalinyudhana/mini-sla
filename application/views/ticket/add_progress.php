@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> Ticket Detail</h1>
+            <h1 class="page-header"> Detail Ticket</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> SiMiLa | Ticket Detail
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Detail Ticket
                 </div>
 
                 <div class="panel-body">
@@ -38,7 +38,7 @@
                                 </tr>
 
                                 <tr>
-                                    <td><strong>Customer Name</strong></td>
+                                    <td><strong>Nama Customer</strong></td>
                                     <td><?php echo $customer_data->nama_customer; ?></td>
                                 </tr>
                                 <tr>
@@ -50,7 +50,7 @@
                                     <td><?php echo $ticket_data->first_name . ' ' . $ticket_data->last_name; ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Category</strong>
+                                    <td><strong>Kategori</strong>
                                     </td>
                                     <td><?php echo $ticket_data->category; ?></td>
                                 </tr>
@@ -77,7 +77,7 @@
                                 <?php } ?>
 
                                 <tr>
-                                    <td><strong>Deskripsi By</strong>
+                                    <td><strong>Deskripsi Oleh</strong>
                                     </td>
                                     <td><?php echo $ticket_data->deskripsi; ?></td>
                                 </tr>
@@ -106,20 +106,20 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Result</label>
+                                <label class="col-sm-3 control-label">Hasil</label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control" name="result"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Description</label>
+                                <label class="col-sm-3 control-label">Deskripsi</label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control" name="description"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
-                        <button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalClose">Close Ticket</button>
+                        <button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalClose">Tutup Ticket</button>
                         <input type="hidden" name="submit_type" value="add_progress" id="ticket_response_submit_type">
                         <input type="submit" name="add_progress" value="Add Progress" class="btn btn-success pull-right">
                         </div>
@@ -130,18 +130,18 @@
                         <div class="modal-content">
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="modalCloseLabel">Ticket Closing Report</h4>
+                            <h4 class="modal-title" id="modalCloseLabel">Laporan Penutupan Ticket</h4>
                           </div>
                           <div class="modal-body">
                             <div class="form-group">
                                 <div class="col-lg-12">
-                                    <label for="recipient-name" class="control-label">Attachment:</label>
+                                    <label for="recipient-name" class="control-label">Lampiran:</label>
                                     <input type="file" class="form-control" name="document">
                                 </div>
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalCloseTicketButton">Close Ticket</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalCloseTicketButton">Tutup Ticket</button>
                           </div>
                         </div>
                       </div>

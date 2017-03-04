@@ -26,17 +26,16 @@
                             <p align="right">
                                 <?php echo anchor('perangkat/create', 'Tambah Perangkat Baru', "class='btn btn-success'") ?>
                             </p>
-
                             <table cellpadding=0 cellspacing=10 class="table" id="datatable" data-url="<?php echo $table_url; ?>">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Part Number</th>
-                                        <th>Brand</th>
+                                        <th>Nomor Perangkat</th>
+                                        <th>Merk</th>
                                         <th>Nama Perangkat</th>
-                                        <th>Type</th>
+                                        <th>Tipe</th>
                                         <th>Status</th>
-                                        <th>Hyperlink</th>
+                                        <th>Url Tambahan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Daftar Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Daftar Pengguna Sistem
                 </div>
 
                 <div class="panel-body">
@@ -22,7 +22,10 @@
                                 <div class="alert alert-warning"><?php echo $message; ?></div>
                                 <?php
                             } ?>
-
+                        <?php
+                            // MENU UTAMA adalah list user hanya utk admin
+                            if ($this->ion_auth->in_group('admin')) :
+                        ?>
                             <p align="right">
                                 <?php echo anchor('users/create', 'Tambah Pengguna Baru', "class='btn btn-success'") ?>
                             </p>
@@ -94,6 +97,7 @@
                                 </tbody>
 
                             </table>
+                        <?php endif; ?>
                         </div>
                     </div>
                     <!-- /.row -->

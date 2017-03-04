@@ -1,4 +1,5 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
+    <img src="<?php echo base_url('assets/logo.jpg') ;?>" class="text-left" width="250px" height="100px" alt="logo">
     <div class="sidebar-collapse">
         <ul class="nav" id="side-menu">
 
