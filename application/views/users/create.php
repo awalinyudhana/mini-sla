@@ -22,7 +22,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Sipempo | Tambah Pengguna Sistem
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Tambah Pengguna Sistem
                 </div>
 
                 <div class="panel-body">

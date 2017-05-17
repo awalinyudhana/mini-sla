@@ -156,18 +156,5 @@ class Groups extends CI_Controller
         $this->load->view('admin/themes/footer');
     }
 
-    public function delete($id)
-    {
-        if (!$id || empty($id)){
-            redirect('groups', 'refresh');
-        }
-
-        $group_delete = $this->ion_auth->delete_group($id);
-        if (!$group_delete) {
-            $this->data['message'] = $this->ion_auth->messages();
-        } else {
-         redirect('groups');
-        }
-    }
 
 }

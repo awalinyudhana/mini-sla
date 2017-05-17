@@ -29,3 +29,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 application/sessions
 application/config/config.php
 application/config/database.php
+.idea/

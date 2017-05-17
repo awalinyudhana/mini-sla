@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title> Simila </title>
+    <title> Sistem Pemeliharaan Produk </title>
 
     <!-- Core CSS - Include with every page -->
     <link rel="stylesheet" href="<?php echo base_url("assets/bootstrap/css/bootstrap.css"); ?>"/>

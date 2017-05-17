@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> List BoQ</h1>
+            <h1 class="page-header"> Daftar BoQ</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | List of Added BoQ
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Daftar BoQ
                 </div>
 
                 <div class="panel-body">
@@ -19,7 +19,7 @@
                         <div class="col-lg-12">
                             <?php if (isset($message)) {
                                 ?>
-                                <div class="alert alert-warning"><?php echo $message; ?></div>
+                                <div class="alert alert-warning alert-dismissible"><?php echo $message; ?></div>
                                 <?php
                             } ?>
 
@@ -29,11 +29,11 @@
                                         <th>No</th>
 <!--                                        <th>Nomor BoQ</th>-->
                                         <th>Nomor PO</th>
-                                        <th>Tanggal Add</th>
+                                        <th>Tanggal Masuk</th>
                                         <th>Nama Customer</th>
                                         <th>Service Level</th>
-                                        <th>Start Date of Support</th>
-                                        <th>End Date of Support</th>
+                                        <th>Tanggal Mulai Support</th>
+                                        <th>Tanggal Akhir Support</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

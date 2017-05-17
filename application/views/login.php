@@ -69,6 +69,7 @@
     <div class="container">
         <div class="wrapper">
             <?php echo form_open(current_url(), array('class' => 'form-signin')); ?>
+            <img src="<?php echo base_url("assets/logo.jpg") ;?>" alt="logo">
             <h1>User Login</h1>
             <?php if ($message) {
                 ?>

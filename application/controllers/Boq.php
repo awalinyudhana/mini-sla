@@ -38,6 +38,10 @@ class Boq extends CI_Controller
             'table_url' => base_url('boq/ajax_list'),
         );
 
+        if (!empty($this->session->flashdata('message'))) {
+            $data['message'] = $this->session->flashdata('message');
+        }
+
         $this->load->view('admin/themes/header');
         $this->load->view('admin/themes/nav');
         $this->load->view('admin/themes/sidebar');
@@ -148,9 +152,19 @@ class Boq extends CI_Controller
         echo json_encode($output);
     }
 
+    public function check_serial_number()
+    {
+        echo json_encode($this->model->check_serial_number($_POST['serial_number']));
+    }
+
     public function add($customer_id)
     {
         if (isset($_POST) && !empty($_POST)) {
+            $data['boq_detail_form_data'] = false;
+            if (!empty($this->input->post('boq_detail'))) {
+                $data['boq_detail_form_data'] = $this->input->post('boq_detail');
+            }
+
             $this->form_validation->set_rules('start_date_of_support', 'Tanggal Awal Support', 'required');
             $this->form_validation->set_rules('end_date_of_support', 'Tanggal Akhir Support', 'required');
             $this->form_validation->set_rules('service_level_id', 'Server Level', 'required|integer');
@@ -163,12 +177,12 @@ class Boq extends CI_Controller
             }
             else
             {
-
                 if (
                     strtotime($this->input->post('end_date_of_support'))
                     < strtotime($this->input->post('start_date_of_support'))
                 )
                 {
+                    $data['populated_form'] = $populated_form;
                     $data['message'] = "Tanggal Akhir Support harus lebih dari Tanggal Awal Support";
                 }
                 else
@@ -214,7 +228,8 @@ class Boq extends CI_Controller
         $customer_data = $this->model->get($customer_id);
         $service_level_data = $this->model->get_service_level();
 
-        $data['title'] = 'New Boq Detail';
+        //$data['title'] = 'New Boq Detail';
+        $data['title'] = 'Detail BoQ Baru';
         $data['customer_data'] = $customer_data;
         $data['service_level_data'] = $service_level_data;
         $data['perangkat_table_url'] = base_url('perangkat/ajax_list/modal');
@@ -248,7 +263,8 @@ class Boq extends CI_Controller
     public function delete($id)
     {
         $this->model->delete($id);
-        redirect(base_url('boq/lists'));
+        $this->session->set_flashdata('message', 'Data berhasil dihapus.');
+        redirect(base_url('boq/lists/'));
     }
 
 //    public function delete_detail($boq_detail_id, $boq_id)

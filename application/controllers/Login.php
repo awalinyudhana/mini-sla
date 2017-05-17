@@ -7,10 +7,7 @@ class Login extends CI_Controller
     {
         parent::__construct();
         if ($this->ion_auth->logged_in()) {
-            //redirect('AdminDashboard');
             if ($this->ion_auth->is_admin()) {
-                //set the flash data error message if there is one
-                //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
                 redirect('users', 'refresh');
             }
             else
@@ -24,27 +21,6 @@ class Login extends CI_Controller
     // log the user in
     public function index()
     {
-        //if not logged in - go to login page
-        /*if (!$this->ion_auth->logged_in()) {
-            redirect('Login','refresh');
-        } else*/
-        if ($this->ion_auth->is_admin()) {
-            //set the flash data error message if there is one
-            //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            redirect('AdminDashboard', 'refresh');
-        } elseif ($this->ion_auth->in_group("technical_manager")) {
-            //redirect to technical manager controller
-            redirect('TechnicalManager', 'refresh');
-        } elseif ($this->ion_auth->in_group("technical")) {
-            //redirect to technical controller
-            redirect('Technical', 'refresh');
-        } elseif ($this->ion_auth->in_group("sales")) {
-            //redirect to sales controller
-            redirect('Sales', 'refresh');
-        } elseif ($this->ion_auth->in_group("BOQ")) {
-            //redirect to boq controller
-            redirect('Boq', 'refresh');
-        }
 
         //validate form input
         $this->form_validation->set_rules(
@@ -65,7 +41,7 @@ class Login extends CI_Controller
                 //if the login is successful
                 //redirect them back to the home page
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('/', 'refresh');
+                redirect('users', 'refresh');
             } else {
                 // if the login was un-successful
                 // redirect them back to the login page

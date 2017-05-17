@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> List Ticket</h1>
+            <h1 class="page-header"> Daftar Ticket</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -33,11 +33,14 @@
                                         <th>Judul</th>
                                         <th>Customer</th>
                                         <th>Perangkat</th>
-                                        <th>Category</th>
+                                        <th>Kategori</th>
                                         <th>Request By</th>
-                                        <th>Tech. Status</th>
-                                        <th>Lead Approval</th>
-                                        <th>Aksi</th>
+                                        <!-- <th>Tech. Status</th> -->
+                                        <th>Status Teknisi</th>
+                                        <th>Persetujuan Pemimpin</th>
+                                        <?php if (isset($type) && $type == 'hasaction') { ?>
+                                            <th>Aksi</th>
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -12,13 +12,19 @@ class TicketListModel extends CI_Model
         parent::__construct();
     }
 
-    public function _get_datatables_query($type = null)
+    public function _get_datatables_query($type = null, $support_user_id = null)
     {
         $this->db->select('*')
                  ->from('ticket t')
                  ->join('customer c', 'c.customer_id = t.customer_id')
                  ->join('boq_detail bd', 'bd.boq_detail_id = t.boq_detail_id', 'left')
                  ->join('perangkat p', 'p.perangkat_id = bd.perangkat_id', 'left');
+
+        if (isset($support_user_id)) {
+            $this->db->join('ticket_users tu', 'tu.ticket_id = t.ticket_id');
+            $this->db->where('tu.user_id', $support_user_id);
+        }
+
         if (isset($type) && $type == 'closed') {
             $this->db->where('t.close_status', 'Closed');
         }
@@ -46,25 +52,27 @@ class TicketListModel extends CI_Model
         }
     }
 
-    public function get_datatables($type = null)
+    public function get_datatables($type = null, $support_user_id = null)
     {
-        $this->_get_datatables_query($type);
+        $this->_get_datatables_query($type, $support_user_id);
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function count_filtered()
+    public function count_filtered($type = null, $support_user_id = null)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($type, $support_user_id);
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    public function count_all()
+    public function count_all($type = null, $support_user_id = null)
     {
-        $this->db->from($this->table);
+        // $this->db->from($this->table);
+        $this->_get_datatables_query($type, $support_user_id);
+        $this->db->get();
         return $this->db->count_all_results();
     }
 

@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"> Ticket Detail</h1>
+            <h1 class="page-header"> Detail Ticket</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -11,7 +11,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Ticket Detail
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Sistem Pemeliharaan Produk | Detail Ticket
                 </div>
 
                 <div class="panel-body">
@@ -38,7 +38,7 @@
                                 </tr>
 
                                 <tr>
-                                    <td><strong>Customer Name</strong></td>
+                                    <td><strong> Nama Customer </strong></td>
                                     <td><?php echo $customer_data->nama_customer; ?></td>
                                 </tr>
                                 <tr>
@@ -50,7 +50,7 @@
                                     <td><?php echo $ticket_data->first_name . ' ' . $ticket_data->last_name; ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Category</strong>
+                                    <td><strong>Kategori</strong>
                                     </td>
                                     <td><?php echo $ticket_data->category; ?></td>
                                 </tr>
@@ -77,16 +77,23 @@
                                 <?php } ?>
 
                                 <tr>
-                                    <td><strong>Deskripsi By</strong>
+                                    <td><strong>Deskripsi Oleh</strong>
                                     </td>
                                     <td><?php echo $ticket_data->deskripsi; ?></td>
                                 </tr>
+                                <?php if (isset($ticket_data->note)) { ?>
+                                <tr>
+                                    <td><strong>Catatan</strong>
+                                    </td>
+                                    <td style="color: #FF4136;"><?php echo $ticket_data->note; ?></td>
+                                </tr>
+                                <?php } ?>
                             </table>
                         </div>
                         <div class="col-lg-6" style="margin-top: 20px !important;">
                             <table class="boq-customer" style="margin-bottom: 10px !important;">
                                 <tr>
-                                    <td><strong>Daftar Teknikal Support</strong></td>
+                                    <td><strong>Daftar Tehnikal Support</strong></td>
                                 </tr>
                             </table>
                             <form class="form-horizontal">
@@ -222,9 +229,9 @@
                                 <tr>
                                     <th>Tanggal</th>
                                     <th>Progress</th>
-                                    <th>Result</th>
-                                    <th>Description</th>
-                                    <th>By</th>
+                                    <th>Hasil</th>
+                                    <th>Deskripsi</th>
+                                    <th>Oleh </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -233,7 +240,12 @@
                                     {
                                         foreach ($progress_data as $value) {
                                             echo "<tr>
-<td>$value->tanggal</td><td>$value->progress</td><td>$value->result</td><td>$value->description</td><td>$value->first_name $value->last_name</td></tr>";
+                                                        <td>$value->tanggal</td>
+                                                        <td>$value->progress</td>
+                                                        <td>$value->result</td>
+                                                        <td>$value->description</td>
+                                                        <td>$value->first_name $value->last_name</td>
+                                                    </tr>";
                                         }
 
                                     }
@@ -241,19 +253,50 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="col-lg-12">
+                            <?php 
+                                if ($this->ion_auth->in_group(['manager'])) {
+                                    echo '<a href="javascript:;" data-href="'.base_url('ticket_list/approve_ticket/'.$ticket_data->ticket_id).'" data-toggle="modal" data-target="#confirm-approve" class="btn btn-success pull-right margin-left-10">Approve Ticket</a>'; 
 
-                        <?php
-                        if ($this->ion_auth->in_group(['support', 'manager']))
-                        {
+                                    echo '<button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalDecline">Decline Ticket</button>';
+
+                                    echo form_open('ticket_list/decline_ticket', ['class' => 'form-horizontal', 'id' => 'ticket_decline_ticket']);
+                            ?>
+                                    <div class="modal" id="modalDecline" tabindex="-1" role="dialog" aria-labelledby="modalDeclineLabel">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="modalDeclineLabel">Catatan Ticket Ditolak</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <input type="hidden" name="ticket_id" value="<?php echo $ticket_data->ticket_id; ?>">
+                                                    <textarea class="form-control" name="note"></textarea>
+                                                </div>
+                                            </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalDeclineTicketButton">Tolak Ticket</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                            <?php
+                                }
                             ?>
 
-                            <div class="col-lg-12">
-                                <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"
-                                   class="btn btn-success pull-right"> Add Progress</a>
-                            </div>
                             <?php
-                        }
-                        ?>
+                            if ($this->ion_auth->in_group(['support', 'manager']))
+                            {
+                                ?>
+                                <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"
+                                   class="btn btn-success pull-right"> Tambah Progress</a>
+                                <?php
+                            }
+                            ?>
+                        </div>
                     </div>
 
                 </div>
@@ -263,4 +306,22 @@
         </div>
         <!-- /.panel -->
     </div>
+
+    <div class="modal fade" id="confirm-approve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Konfirmasi Persetujuan Ticket
+                </div>
+                <div class="modal-body">
+                    <p>Apakah anda yakin menyetujui tiket ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <a class="btn btn-success btn-ok">Setujui Ticket</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

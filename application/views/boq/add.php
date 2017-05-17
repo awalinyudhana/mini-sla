@@ -29,7 +29,7 @@
                         <div class="col-lg-6">
                             <table class="boq-customer">
                                 <input type="hidden" name="customer_id" value="<?php echo $customer_data->customer_id; ?>">
-                                <tr><td class="title"><strong>Customer Name</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
+                                <tr><td class="title"><strong>Nama Customer</strong></td><td><?php echo $customer_data->nama_customer; ?></td></tr>
                                 <tr><td class="title"><strong>Alamat</strong></td><td><?php echo $customer_data->alamat; ?></td></tr>
                                 <tr><td class="title"><strong>Kota - Provinsi</strong></td><td><?php echo $customer_data->kota.' - '.$customer_data->provinsi ; ?></td></tr>
                                 <tr><td class="title"><strong>PIC - Kontak</strong></td><td><?php echo $customer_data->pic.' - '.$customer_data->kontak ; ?></td></tr>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-lg-6 pull-right">
                             <div class="form-group">
-                                <label class="col-sm-6 control-label">Start Date of Support</label>
+                                <label class="col-sm-6 control-label">Tanggal Mulai Support</label>
                                 <div class="col-sm-6">
                                     <div class="input-group date datepicker" data-provide="datepicker">
                                         <input type="text" class="form-control"
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-6 control-label">End Date of Support</label>
+                                <label class="col-sm-6 control-label">Tanggal Akhir Support</label>
                                 <div class="col-sm-6">
                                     <div class="input-group date datepicker" data-provide="datepicker">
                                         <input type="text" class="form-control"
@@ -64,7 +64,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-6 control-label">No Purchase</label>
+                               <!-- <label class="col-sm-6 control-label">No Purchase</label> -->
+                                <label class="col-sm-6 control-label">No. Pembayaran</label>
                                 <div class="col-sm-6">
                                     <input name="purchase_order"
                                            value="<?php echo set_value('purchase_order'); ?>"
@@ -84,7 +85,17 @@
                                     </select>
                                 </div>
                             </div>
-                            <div id="boqDetail"></div>
+                            <div id="boqDetail">
+                            <?php
+                                if(isset($boq_detail_form_data) && $boq_detail_form_data != false) {
+                                    foreach ($boq_detail_form_data as $key => $value) {
+                                        $boq_detail_item = explode(";", $value);
+                                        $index = $key+1;
+                                        echo "<input type='hidden' name='boq_detail[]' id='input-boq-detail-$index' value='$boq_detail_item[0];$boq_detail_item[1];$boq_detail_item[2];$boq_detail_item[3]'>";
+                                    }
+                                }
+                            ?>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -102,13 +113,22 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Part Number</th>
+                                        <th>Nomor Perangkat</th>
                                         <th>Serial Number</th>
                                         <th>Deskripsi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php
+                                    if(isset($boq_detail_form_data) && $boq_detail_form_data != false) {
+                                        foreach ($boq_detail_form_data as $key => $value) {
+                                            $boq_detail_item = explode(";", $value);
+                                            $index = $key+1;
+                                            echo "<tr id='row-boq-detail-$index'><td>$index</td><td>$boq_detail_item[3]</td><td>$boq_detail_item[1]</td><td>$boq_detail_item[2]</td><td><a href='javascript:;' class='btn btn-danger hapus-detail-boq' data-id='$index'>Hapus</a></td></tr>";
+                                        }
+                                    }
+                                ?>
                                 </tbody>
                             </table>
                         </div>
@@ -135,10 +155,10 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Part Number</th>
-                        <th>Brand</th>
+                        <th>Nomor Perangkat</th>
+                        <th>Merk</th>
                         <th>Nama Perangkat</th>
-                        <th>Type</th>
+                        <th>Tipe</th>
                         <th>Status</th>
                         <th>Detail</th>
                         <th>Aksi</th>
@@ -163,6 +183,7 @@
             <h4 class="modal-title" id="modalSerialLabel">Isi Keterangan</h4>
           </div>
           <div class="modal-body">
+            <div id="modalSerialError"></div>
             <div class="form-group">
             <label for="recipient-name" class="control-label">Serial Number:</label>
             <input type="text" class="form-control" id="serialNumber">
@@ -173,7 +194,7 @@
           </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-info" data-dismiss="modal" id="modalSerialCloseButton">Simpan</button>
+            <button type="button" class="btn btn-info" id="modalSerialCloseButton">Simpan</button>
           </div>
         </div>
       </div>

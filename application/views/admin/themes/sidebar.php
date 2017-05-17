@@ -1,4 +1,5 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
+    <img src="<?php echo base_url('assets/logo.jpg') ;?>" class="text-left" width="250px" height="100px" alt="logo">
     <div class="sidebar-collapse">
         <ul class="nav" id="side-menu">
 
@@ -58,6 +59,10 @@
                     <li>
                         <a href="<?php echo base_url('ticket_list/closed')?>">
                             <i class="fa fa-ticket fa-fw"></i>Ticket Closed</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo base_url('ticket_list/all')?>">
+                            <i class="fa fa-ticket fa-fw"></i>Daftar Semua Ticket</a>
                     </li>
                 </ul>
             </li>
