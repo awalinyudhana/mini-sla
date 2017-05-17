@@ -9,14 +9,13 @@ class Login extends CI_Controller
         if ($this->ion_auth->logged_in()) {
             //redirect('AdminDashboard');
             if ($this->ion_auth->is_admin()) {
-                echo "Admin User ";
                 //set the flash data error message if there is one
                 //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
                 redirect('users', 'refresh');
             }
             else
             {
-                redirect('dashboard', 'refresh');
+                redirect('Boq', 'refresh');
             }
         }
 
@@ -30,7 +29,6 @@ class Login extends CI_Controller
             redirect('Login','refresh');
         } else*/
         if ($this->ion_auth->is_admin()) {
-            echo "Admin User ";
             //set the flash data error message if there is one
             //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             redirect('AdminDashboard', 'refresh');

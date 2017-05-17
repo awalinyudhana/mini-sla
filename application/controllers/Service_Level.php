@@ -51,7 +51,8 @@ class Service_Level extends CI_Controller
             $row[] = $sl->maintenance;
             $row[] = $sl->support;
             $row[] = $sl->sla;
-            $row[] = $action;
+            if ($this->ion_auth->in_group(['manager']))
+                $row[] = $action;
 
             $data[] = $row;
         }

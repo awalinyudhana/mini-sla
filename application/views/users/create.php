@@ -67,32 +67,17 @@
 
                             <div class="form-group">
                                 <label for="Groups" class="col-sm-2 control-label">Group</label>
-                                <div class="col-sm-10">
-                                    <?php
-
-                                    foreach ($groups as $group): ?>
+                                <div class="col-sm-6">
+                                    <select class="form-control" name="groups">
                                         <?php
-                                        $gID = $group['id'];
-                                        $checked = null;
-                                        $item = null;
-                                        if ($currentGroups) {
-                                            foreach ($currentGroups as $grp) {
-                                                if ($gID == $grp) {
-                                                    $checked = ' checked="checked"';
-                                                    break;
-                                                }
 
-                                            }
-                                        }
-
+                                        foreach ($groups as $group):
                                         ?>
-                                        <label class="btn btn-default">
-                                            <input type="checkbox" name="groups[]"
-                                                   value="<?php echo $group['id']; ?>"<?php echo $checked; ?>>
-                                            <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
-                                        </label>
-                                    <?php endforeach ?>
-
+                                            <option value="<?php echo $group['id']; ?>">
+                                                <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
+                                            </option>
+                                        <?php endforeach ?>
+                                    </select>
                                 </div>
                             </div>
 

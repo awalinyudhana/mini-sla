@@ -52,7 +52,7 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
         $this->form_validation->set_rules('username', 'Nip', 'required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
         $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
-        $this->form_validation->set_rules('groups[]', 'Group', 'required');
+        $this->form_validation->set_rules('groups', 'Group', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
         $this->form_validation->set_rules('password_confirm', 'Password Confirm', 'required');
 
@@ -71,19 +71,14 @@ class Users extends CI_Controller
         ) {
 
             $groupData = $this->input->post('groups');
-//
-            if (isset($groupData) && !empty($groupData)) {
-
                 //get last inserted user id
-                $this->db->select_max('id');
-                $query = $this->db->get('users')->row();
+            $this->db->select_max('id');
+            $query = $this->db->get('users')->row();
 
-                $this->ion_auth->remove_from_group('', $query->id);
+            $this->ion_auth->remove_from_group('', $query->id);
 
-                foreach ($groupData as $grp) {
-                    $this->ion_auth->add_to_group($grp, $query->id);
-                }
-            }
+            $this->ion_auth->add_to_group($groupData, $query->id);
+
             // check to see if we are creating the user
             // redirect them back to the admin page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -175,8 +170,7 @@ class Users extends CI_Controller
 
         $user = $this->ion_auth->user($id)->row();
         $groups = $this->ion_auth->groups()->result_array();
-        $currentGroups = $this->ion_auth->get_users_groups($id)->result();
-
+        $currentGroups = $this->ion_auth->get_users_groups($id)->result_array();
         // validate form input
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
@@ -215,14 +209,9 @@ class Users extends CI_Controller
                     //Update the groups user belongs to
                     $groupData = $this->input->post('groups');
 
-                    if (isset($groupData) && !empty($groupData)) {
+                    $this->ion_auth->remove_from_group('', $id);
 
-                        $this->ion_auth->remove_from_group('', $id);
-
-                        foreach ($groupData as $grp) {
-                            $this->ion_auth->add_to_group($grp, $id);
-                        }
-                    }
+                    $this->ion_auth->add_to_group($groupData, $id);
                 }
 
                 // check to see if we are updating the user

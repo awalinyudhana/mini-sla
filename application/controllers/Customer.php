@@ -50,7 +50,8 @@ class Customer extends CI_Controller
             $row[] = $customer->pic;
             $row[] = $customer->kontak;
             $row[] = $customer->email;
-            $row[] = $action;
+            if ($this->ion_auth->in_group(['admin', 'manager']))
+                $row[] = $action;
 
             $data[] = $row;
         }

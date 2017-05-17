@@ -23,9 +23,16 @@
                                 <?php
                             } ?>
 
-                            <p align="right">
-                                <?php echo anchor('customer/create', 'Tambah Customer Baru', "class='btn btn-success'") ?>
-                            </p>
+                            <?php
+                            if ($this->ion_auth->in_group(['admin', 'manager']))
+                            {
+                                ?>
+                                <p align="right">
+                                    <?php echo anchor('customer/create', 'Tambah Customer Baru', "class='btn btn-success'") ?>
+                                </p>
+                                <?php
+                            }
+                            ?>
 
                             <table cellpadding=0 cellspacing=10 class="table" id="datatable" data-url="<?php echo $table_url; ?>">
                                 <thead>
@@ -39,7 +46,14 @@
                                         <th>PIC</th>
                                         <th>Kontak</th>
                                         <th>Email</th>
-                                        <th>Aksi</th>
+                                        <?php
+                                        if ($this->ion_auth->in_group(['admin', 'manager']))
+                                        {
+                                            ?>
+                                            <th>Aksi</th>
+                                            <?php
+                                        }
+                                        ?>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

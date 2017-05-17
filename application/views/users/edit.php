@@ -73,31 +73,19 @@
                             <?php if ($this->ion_auth->is_admin()): ?>
                             <div class="form-group">
                                 <label for="Groups" class="col-sm-2 control-label">Group</label>
-                                <div class="col-sm-10">
-                                    <?php
-
-                                    foreach ($groups as $group): ?>
+                                <div class="col-sm-6">
+                                    <select class="form-control" name="groups">
                                         <?php
-                                        $gID = $group['id'];
-                                        $current_groups = null;
-                                        $checked = null;
-                                        $item = null;
-                                        foreach ($currentGroups as $grp) {
-                                            $current_groups = $grp->name;
-                                            if ($gID == $grp->id) {
-                                                $checked = ' checked="checked"';
-                                                break;
-                                            }
 
-                                        }
-
-                                        ?>
-                                        <label class="btn btn-default">
-                                            <input type="checkbox" name="groups[]"
-                                                   value="<?php echo $group['id']; ?>"<?php echo $checked; ?>>
-                                            <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
-                                        </label>
-                                    <?php endforeach ?>
+                                        foreach ($groups as $group):
+                                            ?>
+                                            <option value="<?php echo $group['id']; ?>" <?php
+                                                echo $group['id'] == $currentGroups[0]['id'] ? "selected" : "";
+                                            ?>>
+                                                <?php echo htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8'); ?>
+                                            </option>
+                                        <?php endforeach ?>
+                                    </select>
 
                                 </div>
                             </div>

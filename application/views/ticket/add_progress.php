@@ -119,7 +119,15 @@
                             </div>
                         </div>
                         <div class="col-lg-12">
-                        <button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalClose">Close Ticket</button>
+
+                            <?php
+                            if ($this->ion_auth->in_group(['manager']))
+                            {
+                                ?>
+                                <button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalClose">Close Ticket</button>
+                                <?php
+                            }
+                            ?>
                         <input type="hidden" name="submit_type" value="add_progress" id="ticket_response_submit_type">
                         <input type="submit" name="add_progress" value="Add Progress" class="btn btn-success pull-right">
                         </div>

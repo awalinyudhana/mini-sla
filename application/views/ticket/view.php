@@ -140,8 +140,15 @@
                             endif;
                             ?>
 
+                                <?php
+                                if ($this->ion_auth->in_group(['support', 'manager']))
+                                {
+                                    ?>
+                                    <input type="submit" value="Edit Support" class="btn btn-success pull-right">
+                                    <?php
+                                }
+                                ?>
 
-                            <input type="submit" value="Edit Support" class="btn btn-success pull-right">
                             <?php
                                 echo form_close();
                             ?>
@@ -235,10 +242,18 @@
                             </table>
                         </div>
 
-                        <div class="col-lg-12">
-                            <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"
-                               class="btn btn-success pull-right"> Add Progress</a>
-                        </div>
+                        <?php
+                        if ($this->ion_auth->in_group(['support', 'manager']))
+                        {
+                            ?>
+
+                            <div class="col-lg-12">
+                                <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"
+                                   class="btn btn-success pull-right"> Add Progress</a>
+                            </div>
+                            <?php
+                        }
+                        ?>
                     </div>
 
                 </div>

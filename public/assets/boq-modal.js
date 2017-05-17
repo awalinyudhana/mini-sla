@@ -30,6 +30,8 @@ var BoQModal = function() {
                     boqDetailTable.append('<tr id="row-boq-detail-'+index+'"><td>'+index+'</td><td>'+partNumber+'</td><td>'+serialNumber+'</td><td>'+deskripsi+'</td><td><a href="javascript:;" class="btn btn-danger hapus-detail-boq" data-id="'+index+'">Hapus</a></td></tr>');
                     boqDetail.append('<input type="hidden" name="boq_detail[]" id="input-boq-detail-'+index+'" value="'+perangkatId+';'+serialNumber+';'+deskripsi+'">');
                 }
+                $('#serialNumber').val('');
+                $('#deskripsi').val('');
             });
 
             $("#boqDetailTable tbody").on('click', '.hapus-detail-boq', function() {

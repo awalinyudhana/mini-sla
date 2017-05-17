@@ -89,8 +89,10 @@ class Boq extends CI_Controller
         foreach ($list as $boq) {
             $no++;
             $row = array();
-            $action = '<a href="'.base_url('boq/detail/'.$boq->boq_id).'" class="btn btn-info">View</a>
-            <a href="javascript:;" data-href="'.base_url('boq/delete/'.$boq->boq_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Hapus</a>';
+            $action = '<a href="'.base_url('boq/detail/'.$boq->boq_id).'" class="btn btn-info">View</a>';
+
+            if ($this->ion_auth->in_group(['admin', 'manager']))
+                $action .= '<a href="javascript:;" data-href="'.base_url('boq/delete/'.$boq->boq_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Hapus</a>';
 
 
             $row[] = $no;

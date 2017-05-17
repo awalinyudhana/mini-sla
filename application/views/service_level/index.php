@@ -23,9 +23,16 @@
                                 <?php
                             } ?>
 
-                            <p align="right">
-                                <?php echo anchor('service_level/create', 'Tambah Layanan Baru', "class='btn btn-success'") ?>
-                            </p>
+                            <?php
+                            if ($this->ion_auth->in_group(['manager']))
+                            {
+                                ?>
+                                <p align="right">
+                                    <?php echo anchor('service_level/create', 'Tambah Layanan Baru', "class='btn btn-success'") ?>
+                                </p>
+                                <?php
+                            }
+                            ?>
 
                             <table cellpadding=0 cellspacing=10 class="table" id="datatable" data-url="<?php echo $table_url; ?>">
                                 <thead>
@@ -40,7 +47,15 @@
                                         <th>Maintenance</th>
                                         <th>Support</th>
                                         <th>SLA (Day)</th>
-                                        <th>Aksi</th>
+
+                                        <?php
+                                        if ($this->ion_auth->in_group(['manager']))
+                                        {
+                                            ?>
+                                            <th>Aksi</th>
+                                            <?php
+                                        }
+                                        ?>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
