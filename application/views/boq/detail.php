@@ -25,6 +25,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <?php echo anchor('boq/lists', 'Kembali Daftar BoQ', "class='btn btn-default pull-right'")?>
+                            <a href="<?php echo base_url();?>boq/print_detail/<?php echo $boq_data->boq_id; ?>" target="_blank" class="btn btn-default pull-right" style="margin-right: 10px;">Cetak Detail BoQ</a>
                         </div>
                     </div>
                     <div class="row">

@@ -13,21 +13,36 @@ class TicketListModel extends CI_Model
     }
 
     public function _get_datatables_query($type = null, $support_user_id = null)
-    {
+    {   
+        $where = '';
+        if (isset($type) && $type == 'closed') {
+            $where .= "t.close_status='Closed'";
+        } else if (isset($type) && $type == 'overdue') { 
+            $where .= "t.close_status='Closed' AND (datediff(t.close_date,t.tanggal) > s.sla)";
+            if ($this->session->userdata('report_start') && $this->session->userdata('report_end')) {
+                $where .= "AND t.tanggal >= '".$this->session->userdata('report_start')."' AND t.tanggal <= '".$this->session->userdata('report_end')."'";
+            }
+        } else {
+            $where .= "t.close_status='Open'";
+        }
+
+        if (isset($support_user_id)) {
+            $where .= " AND tu.user_id=".$support_user_id;
+        }
+        $this->db->where($where);
+
         $this->db->select('*')
                  ->from('ticket t')
                  ->join('customer c', 'c.customer_id = t.customer_id')
                  ->join('boq_detail bd', 'bd.boq_detail_id = t.boq_detail_id', 'left')
+                 ->join('boq b', 'b.boq_id = bd.boq_id', 'left')
+                 ->join('service_level s', 's.service_level_id = b.service_level_id', 'left')
                  ->join('perangkat p', 'p.perangkat_id = bd.perangkat_id', 'left');
 
         if (isset($support_user_id)) {
             $this->db->join('ticket_users tu', 'tu.ticket_id = t.ticket_id');
-            $this->db->where('tu.user_id', $support_user_id);
         }
 
-        if (isset($type) && $type == 'closed') {
-            $this->db->where('t.close_status', 'Closed');
-        }
         $i = 0;
         foreach ($this->column_search as $item) { // loop column 
             if($_POST['search']['value']) { // if datatable send POST for search
@@ -91,7 +106,6 @@ class TicketListModel extends CI_Model
 
     public function get_progress_data($ticket_id)
     {
-        echo $ticket_id;
         $this->db->select('*');
         $this->db->from('ticket_response t');
         $this->db->join('users u', 'u.id = t.user_id');
@@ -108,6 +122,36 @@ class TicketListModel extends CI_Model
 
         if ($this->db->trans_status() === TRUE) {
             return true;
+        }
+            return false;
+    }
+
+    public function get_overdue_data()
+    {
+        $where = '';
+        $where .= "t.close_status='Closed' AND (datediff(t.close_date,t.tanggal) > s.sla)";
+        if ($this->session->userdata('report_start') && $this->session->userdata('report_end')) {
+            $where .= "AND t.tanggal >= '".$this->session->userdata('report_start')."' AND t.tanggal <= '".$this->session->userdata('report_end')."'";
+        }
+
+        if ($this->ion_auth->in_group('technical')) {
+            $support_user_id = $this->ion_auth->user()->row()->id;
+            $where .= " AND tu.user_id=".$support_user_id;
+        }
+
+        $this->db->where($where);
+
+        $this->db->select('*')
+                 ->from('ticket t')
+                 ->join('customer c', 'c.customer_id = t.customer_id')
+                 ->join('boq_detail bd', 'bd.boq_detail_id = t.boq_detail_id', 'left')
+                 ->join('boq b', 'b.boq_id = bd.boq_id', 'left')
+                 ->join('service_level s', 's.service_level_id = b.service_level_id', 'left')
+                 ->join('perangkat p', 'p.perangkat_id = bd.perangkat_id', 'left');
+        $query = $this->db->get();
+        $row = $query->row();
+        if (isset($row)) {
+            return $query->result();
         }
             return false;
     }

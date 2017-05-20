@@ -93,7 +93,7 @@
                         <div class="col-lg-6" style="margin-top: 20px !important;">
                             <table class="boq-customer" style="margin-bottom: 10px !important;">
                                 <tr>
-                                    <td><strong>Daftar Tehnikal Support</strong></td>
+                                    <td><strong>Daftar Teknikal Support</strong></td>
                                 </tr>
                             </table>
                             <form class="form-horizontal">
@@ -148,7 +148,7 @@
                             ?>
 
                                 <?php
-                                if ($this->ion_auth->in_group(['support', 'manager']))
+                                if ($this->ion_auth->in_group(['technical', 'manager']))
                                 {
                                     ?>
                                     <input type="submit" value="Edit Support" class="btn btn-success pull-right">
@@ -288,7 +288,7 @@
                             ?>
 
                             <?php
-                            if ($this->ion_auth->in_group(['support', 'manager']))
+                            if ($this->ion_auth->in_group(['technical', 'manager']))
                             {
                                 ?>
                                 <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"

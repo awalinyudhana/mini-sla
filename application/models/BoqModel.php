@@ -175,4 +175,18 @@ class BoqModel extends CI_Model
     {
         $this->db->delete('boq_detail', array('boq_detail_id' => $boq_detail_id));
     }
+
+    public function get_boq_perangkat($boq_id)
+    {
+        $this->db->select('bd.*, p.part_number')
+                 ->from('boq_detail bd')
+                 ->join('perangkat p', 'p.perangkat_id = bd.perangkat_id')
+                 ->where('bd.boq_id',$boq_id);
+        $query = $this->db->get();
+        $row = $query->row();
+        if (isset($row)) {
+            return $query->result();
+        }
+            return false;
+    }
 }

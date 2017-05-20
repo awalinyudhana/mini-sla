@@ -29,8 +29,15 @@
     </div>
 </div>
 
+<script type="text/javascript" src="<?php echo base_url("assets/bootstrap/jquery-1.11.1.js"); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url("assets/bootstrap/js/bootstrap.js"); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url("assets/admin/sb-admin.js"); ?>"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url("assets/datepicker/bootstrap-datepicker.min.js"); ?>"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url("assets/boq-modal.js"); ?>"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <!-- Core Scripts - Include with every page -->
 <script type="text/javascript">
