@@ -317,3 +317,44 @@ table.boq-customer td.title {
 .margin-left-10 {
     margin-left: 10px;
 }
+
+/** CUSTOM **/
+.nav-logout {
+    margin-bottom: -5px !important;
+    background-color: #777 !important;
+    margin-right: 0px !important;
+}
+.nav-logout:hover {
+    background-color: #666 !important;
+}
+.logout-link {
+    color: #fff !important;
+}
+.account-info p {
+    margin-bottom: 0 !important;
+    text-align: right;
+    color: #777;
+    font-weight: bold;
+}
+.ul-sub-menu  {
+    padding-left: 0px;
+}
+.li-sub-menu {
+    list-style-type: none;
+}
+.li-sub-menu a {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-decoration: none;
+    padding-left: 57px !important;
+}
+.li-sub-menu a:hover {
+    background-color: #eee;
+}
+
+@media (min-width: 768px) {
+    .navbar-right {
+        margin-right: 0px !important; 
+    }
+}

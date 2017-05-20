@@ -27,7 +27,7 @@
                             </p>
                             <?php 
                                 if ($mode == 'create') {
-                                    echo form_open('customer/create', ['class' => 'form-horizontal']); 
+                                    echo form_open('customer/create', ['class' => 'form-horizontal', 'data-toggle' => 'validator']); 
                                 } else {
                                     echo form_open('customer/update', ['class' => 'form-horizontal']); 
                                     echo "<input type='hidden' name='customer_id' value='$customer_id'>";
@@ -37,56 +37,64 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Nama Customer</label>
                                 <div class="col-sm-6">
-                                    <input name="nama_customer" <?php if ($mode == 'update') echo "value='$nama_customer'" ?>type="text" class='form-control'>
+                                    <input name="nama_customer" <?php if ($mode == 'update') echo "value='$nama_customer'" ?>type="text" class='form-control' data-required-error="Mohon diisi" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Alamat</label>
                                 <div class="col-sm-6">
-                                    <input name="alamat" <?php if ($mode == 'update') echo "value='$alamat'" ?>type="text" class='form-control'>
+                                    <input name="alamat" <?php if ($mode == 'update') echo "value='$alamat'" ?>type="text" class='form-control' data-required-error="Mohon diisi" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Kota</label>
                                 <div class="col-sm-6">
-                                    <input name="kota" <?php if ($mode == 'update') echo "value='$kota'" ?>type="text" class='form-control'>
+                                    <input name="kota" <?php if ($mode == 'update') echo "value='$kota'" ?>type="text" class='form-control' pattern="^[_A-z]{1,}$" data-required-error="Mohon diisi" data-pattern-error="Mohon diisi hanya dengan huruf" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Provinsi</label>
                                 <div class="col-sm-6">
-                                    <input name="provinsi" <?php if ($mode == 'update') echo "value='$provinsi'" ?>type="text" class='form-control'>
+                                    <input name="provinsi" <?php if ($mode == 'update') echo "value='$provinsi'" ?>type="text" class='form-control' pattern="^[_A-z]{1,}$" data-required-error="Mohon diisi" data-pattern-error="Mohon diisi hanya dengan huruf" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Kode Pos</label>
                                 <div class="col-sm-6">
-                                    <input name="kode_pos" <?php if ($mode == 'update') echo "value='$kode_pos'" ?>type="text" class='form-control'>
+                                    <input name="kode_pos" <?php if ($mode == 'update') echo "value='$kode_pos'" ?> type="text" class='form-control' pattern="^[_0-9]{1,}$" maxlength="5" data-required-error="Mohon diisi" data-pattern-error="Mohon diisi hanya dengan angka" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">PIC</label>
                                 <div class="col-sm-6">
-                                    <input name="pic" <?php if ($mode == 'update') echo "value='$pic'" ?>type="text" class='form-control'>
+                                    <input name="pic" <?php if ($mode == 'update') echo "value='$pic'" ?>type="text" class='form-control' data-required-error="Mohon diisi" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Kontak</label>
                                 <div class="col-sm-6">
-                                    <input name="kontak" <?php if ($mode == 'update') echo "value='$kontak'" ?>type="text" class='form-control'>
+                                    <input name="kontak" <?php if ($mode == 'update') echo "value='$kontak'" ?>type="text" class='form-control' data-required-error="Mohon diisi" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Email</label>
                                 <div class="col-sm-6">
-                                    <input name="email" <?php if ($mode == 'update') echo "value='$email'" ?>type="email" class='form-control'>
+                                    <input name="email" <?php if ($mode == 'update') echo "value='$email'" ?>type="email" class='form-control' data-required-error="Mohon diisi" data-error="Mohon sertakan '@' sebagai alamat email" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 

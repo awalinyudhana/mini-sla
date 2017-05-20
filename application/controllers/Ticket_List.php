@@ -50,15 +50,12 @@ class Ticket_List extends CI_Controller
 
     public function ajax_list($type = null, $support_user_id = null)
     {
-        if ($this->ion_auth->in_group(['support']) && !$this->ion_auth->in_group(['manager'])) {
+        if ($this->ion_auth->in_group(['technical']) && !$this->ion_auth->in_group(['manager'])) {
             $support_user_id = $this->ion_auth->get_user_id();
         }
 
-        if (isset($type) && $type == 'closed') {
-            $list = $this->model->get_datatables('closed', $support_user_id);
-        } else {
-            $list = $this->model->get_datatables(null, $support_user_id);
-        }
+        $list = $this->model->get_datatables($type, $support_user_id);
+
         $data = array();
         $no = $_POST['start'];
         
@@ -85,7 +82,7 @@ class Ticket_List extends CI_Controller
             $row[] = $item->close_status;
             $row[] = $item->approved_status;
 
-            if ($type == 'hasaction') {
+            if ($type == 'hasaction' || $type == 'overdue') {
                 $row[] = $action;
             }
 
@@ -118,6 +115,7 @@ class Ticket_List extends CI_Controller
         $available_support = $this->ticket_model->get_available_support_by_ticket($ticket_id);
         $list_support = $this->ticket_model->get_list_support_by_ticket($ticket_id);
         $progress_data = $this->model->get_progress_data($ticket_id);
+
         if ($ticket_data->boq_detail_id != null) {
             $boq_detail_data = $this->ticket_model->get_boq_detail($ticket_data->boq_detail_id);
             $boq_data = $this->ticket_model->get_boq($boq_detail_data->boq_id);
@@ -264,9 +262,99 @@ class Ticket_List extends CI_Controller
         $this->load->view('admin/themes/footer');
     }
 
+    public function overdue($start='',$end='')
+    {
+        $this->session->unset_userdata('report_start');
+        $this->session->unset_userdata('report_end');
+
+        if ($start!='' && $end!='') {
+            $this->session->set_userdata('report_start', $start);
+            $this->session->set_userdata('report_end', $end);
+        }
+
+        $data = array(
+            'title' => 'List Ticket Overdue',
+            'table_url' => base_url('Ticket_List/ajax_list/overdue'),
+            'type' => 'overdue',
+        );
+
+        $this->load->view('admin/themes/header');
+        $this->load->view('admin/themes/nav');
+        $this->load->view('admin/themes/sidebar');
+        $this->load->view('ticket/list', $data);
+        $this->load->view('admin/themes/footer');
+    }
+
+    public function print_overdue()
+    {
+        $this->load->library('Pdf');
+
+        $overdue_data = $this->model->get_overdue_data();
+
+        $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf->SetTitle('Overdue Ticket');
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        $pdf->SetTopMargin(10);
+        $pdf->SetAutoPageBreak(true);
+        $pdf->SetAuthor('KAYREACH SYSTEM');
+        $pdf->SetDisplayMode('real', 'default');
+
+        $pdf->AddPage();
+
+        $ticket_data_html = "";
+        $no = 1;
+        foreach ($overdue_data as $key => $value) {
+            $ticket_data_html .= '
+            <tr>
+                <td>'.$no.'</td>
+                <td>'.$value->ticket_id.'</td>
+                <td>'.$value->tanggal.'</td>
+                <td>'.$value->judul.'</td>
+                <td>'.$value->nama_customer.'</td>
+                <td>'.$value->nama_perangkat.'</td>
+                <td>'.$value->category.'</td>
+                <td>'.$value->request_by.'</td>
+                <td>'.$value->close_status.'</td>
+                <td>'.$value->approved_status.'</td>
+            </tr>
+            ';
+            $no++;
+        }
+
+        $html ='
+            <h3>Overdue Ticket</h3>
+            <table border="1" cellpadding="4">
+                <thead>
+                    <tr>
+                        <th><strong>No</strong></th>
+                        <th><strong>No. Ticket</strong></th>
+                        <th><strong>Tanggal</strong></th>
+                        <th><strong>Judul</strong></th>
+                        <th><strong>Customer</strong></th>
+                        <th><strong>Perangkat</strong></th>
+                        <th><strong>Kategori</strong></th>
+                        <th><strong>Request By</strong></th>
+                        <th><strong>Status Teknisi</strong></th>
+                        <th><strong>Persetujuan Pemimpin</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    '.$ticket_data_html.'
+                </tbody>
+            </table>
+        ';
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->Output('Overdue Ticket.pdf', 'I');
+
+    }
+
     public function approve_ticket($ticket_id)
     {
         $ticket_form_data = array(
+            'close_status' => 'Closed',
+            'close_date' => date('Y-m-d'),
             'approved_status' => 'Approved',
             'approved_date' => date('Y-m-d'),
         );

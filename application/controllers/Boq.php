@@ -95,7 +95,7 @@ class Boq extends CI_Controller
             $row = array();
             $action = '<a href="'.base_url('boq/detail/'.$boq->boq_id).'" class="btn btn-info">View</a>';
 
-            if ($this->ion_auth->in_group(['admin', 'manager']))
+            if ($this->ion_auth->in_group(['admin']))
                 $action .= '<a href="javascript:;" data-href="'.base_url('boq/delete/'.$boq->boq_id).'" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger delete-confirmation">Hapus</a>';
 
 
@@ -258,6 +258,86 @@ class Boq extends CI_Controller
         $this->load->view('admin/themes/sidebar');
         $this->load->view('boq/detail', $data);
         $this->load->view('admin/themes/footer');
+    }
+
+    public function print_detail($boq_id)
+    {
+        $this->load->library('Pdf');
+
+        $boq_data = $this->model->get_boq($boq_id);
+        $customer_data = $this->model->get($boq_data->customer_id);
+        $perangkat_data = $this->model->get_boq_perangkat($boq_id); 
+
+        $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf->SetTitle('BoQ - '.$customer_data->nama_customer.' #'.$boq_data->boq_id);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        $pdf->SetTopMargin(10);
+        $pdf->SetAutoPageBreak(true);
+        $pdf->SetAuthor('KAYREACH SYSTEM');
+        $pdf->SetDisplayMode('real', 'default');
+
+        $pdf->AddPage();
+
+        $perangkat_data_html = "";
+        $no = 1;
+        foreach ($perangkat_data as $key => $value) {
+            $perangkat_data_html .= '
+            <tr>
+                <td>'.$no.'</td>
+                <td>'.$value->part_number.'</td>
+                <td>'.$value->serial_number.'</td>
+                <td>'.$value->deskripsi.'</td>
+            </tr>
+            ';
+            $no++;
+        }
+
+        $html ='
+            <h3>Detail BoQ</h3>
+            <table>
+                <tr>
+                    <td>
+                        <table>
+                            <tr><td><strong>Nama Customer</strong></td><td>'.$customer_data->nama_customer.'</td></tr>
+                            <tr><td><strong>Alamat</strong></td><td>'.$customer_data->alamat.'</td></tr>
+                            <tr><td><strong>Kota - Provinsi</strong></td><td>'.$customer_data->kota.' - '.$customer_data->provinsi.'</td></tr>
+                            <tr><td><strong>PIC - Kontak</strong></td><td>'.$customer_data->pic.' - '.$customer_data->kontak.'</td></tr>
+                            <tr><td><strong>Email</strong></td><td>'.$customer_data->email.'</td></tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tr><td><strong>No. BoQ</strong></td><td>'.$boq_data->boq_id.'</td></tr>
+                            <tr><td><strong>No. PO</strong></td><td>'.$boq_data->purchase_order.'</td></tr>
+                            <tr><td><strong>Tanggal Trans.</strong></td><td>'.$boq_data->tanggal_add.'</td></tr>
+                            <tr><td><strong>Staff</strong></td><td>'.$boq_data->first_name.' '.$boq_data->last_name.'</td></tr>
+                            <tr><td><strong>Service Level</strong></td><td>'.$boq_data->service_level.'</td></tr>
+                            <tr><td><strong>Tgl Mulai Support</strong></td><td>'.$boq_data->start_date_of_support.'</td></tr>
+                            <tr><td><strong>Tgl Akhir Support</strong></td><td>'.$boq_data->end_date_of_support.'</td></tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <h3>Detail Perangkat</h3>
+            <table border="1" cellpadding="4">
+                <thead>
+                    <tr>
+                        <th><strong>No</strong></th>
+                        <th><strong>Nomor Perangkat</strong></th>
+                        <th><strong>Serial Number</strong></th>
+                        <th><strong>Deskripsi</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    '.$perangkat_data_html.'
+                </tbody>
+            </table>
+        ';
+        // $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+        $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->Output('BoQ - '.$customer_data->nama_customer.' #'.$boq_data->boq_id.'.pdf', 'I');
     }
 
     public function delete($id)

@@ -125,39 +125,54 @@ class TicketModel extends CI_Model
     }
 
     public function get_list_support()
-    {
+    {   
+        if ($this->ion_auth->in_group(['manager'])) {
+            $where = "g.name='".$this->config->item('default_group', 'ion_auth')."' OR u.id=".$this->ion_auth->user()->row()->id;
+        } else {
+            $where = "g.name='".$this->config->item('default_group', 'ion_auth')."'";
+        }
+
         $this->db->select('u.*');
         $this->db->from('users u');
         $this->db->join('users_groups ug', 'ug.user_id = u.id','left');
-        $this->db->join('groups g', 'g.id = ug.group_id','left');
-        $this->db->where('g.name', $this->config->item('default_group', 'ion_auth'));
+        $this->db->join('groups g', 'g.id = ug.group_id','left');      
+        $this->db->where($where);
+        $this->db->order_by('u.first_name','asc');
+
         return $this->db->get()->result();
     }
 
     public function get_available_support_by_ticket($ticket)
     {
+        if ($this->ion_auth->in_group(['manager'])) {
+            $where = "u.id NOT IN (select us.id from users us join ticket_users tu on tu.user_id = us.id where tu.ticket_id=".$ticket.") AND (g.name='".$this->config->item('default_group', 'ion_auth')."' OR u.id=".$this->ion_auth->user()->row()->id.")";
+        } else {
+            $where = "u.id NOT IN (select us.id from users us join ticket_users tu on tu.user_id = us.id where tu.ticket_id=".$ticket.") AND g.name='".$this->config->item('default_group', 'ion_auth')."'";
+        }
+
         $this->db->select('u.*');
         $this->db->from('users u');
         $this->db->join('users_groups ug', 'ug.user_id = u.id','left');
         $this->db->join('groups g', 'g.id = ug.group_id','left');
-        $this->db->where(
-            'u.id NOT IN (select us.id from users us join ticket_users tu on tu.user_id = us.id where tu.ticket_id='.$ticket.')',
-            null
-        );
-        $this->db->where('g.name', $this->config->item('default_group', 'ion_auth'));
+        $this->db->where($where);
+        $this->db->order_by('u.first_name','asc');
         return $this->db->get()->result();
     }
 
     public function get_list_support_by_ticket($ticket)
     {
+        if ($this->ion_auth->in_group(['manager'])) {
+            $where = "tu.ticket_id=".$ticket." AND (g.name='".$this->config->item('default_group', 'ion_auth')."' OR u.id=".$this->ion_auth->user()->row()->id.")";
+        } else {
+            $where = "tu.ticket_id=".$ticket." AND g.name='".$this->config->item('default_group', 'ion_auth')."'";
+        }
 
         $this->db->select('u.*');
         $this->db->from('users u');
         $this->db->join('ticket_users tu', 'tu.user_id = u.id','left');
         $this->db->join('users_groups ug', 'ug.user_id = u.id','left');
         $this->db->join('groups g', 'g.id = ug.group_id','left');
-        $this->db->where('tu.ticket_id', $ticket);
-        $this->db->where('g.name', $this->config->item('default_group', 'ion_auth'));
+        $this->db->where($where);
         return $this->db->get()->result();
     }
 

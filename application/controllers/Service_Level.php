@@ -6,8 +6,12 @@ class Service_Level extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-
-        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+/*
+        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin() || !$this->ion_auth->in_group("manager"))
+        {
+            redirect('/', 'refresh');
+        }*/
+        if (!$this->ion_auth->logged_in() || !$this->ion_auth->in_group(["admin","manager","technical"]))
         {
             redirect('/', 'refresh');
         }

@@ -172,7 +172,7 @@ class Users extends CI_Controller
         $identity_column = $this->config->item('identity', 'ion_auth');
         $this->data['identity_column'] = $identity_column;
 
-        if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))) {
+        if (!$this->ion_auth->logged_in() || (!$this->ion_auth->in_group(['admin','manager']) && !($this->ion_auth->user()->row()->id == $id))) {
             redirect('users', 'refresh');
         }
 

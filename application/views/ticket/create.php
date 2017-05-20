@@ -39,7 +39,23 @@
                                 <tr><td class="title"><strong>Serial Number</strong></td><td><?php echo $boq_detail_data->serial_number; ?></td></tr>
                                 <tr><td class="title"><strong>Nama Perangkat</strong></td><td><?php echo $boq_detail_data->nama_perangkat; ?></td></tr>
                                 <tr><td class="title"><strong>Tanggal Mulai Support</strong></td><td><?php echo $boq_data->start_date_of_support; ?></td></tr>
-                                <tr><td class="title"><strong>Tanggal Akhir Support</strong></td><td><?php echo $boq_data->end_date_of_support; ?></td></tr>
+                                <?php
+                                    $style = '';
+                                    $end_date_of_support = date('Y-m-d', strtotime($boq_data->end_date_of_support));
+                                    $today_date = date('Y-m-d');
+                                    
+                                    if ($today_date > $end_date_of_support) {
+                                        $style = 'color:#FF4136';
+                                    } else {
+                                        $date_diff = date_diff(date_create($end_date_of_support), date_create($today_date));
+                                        $diff_months = $date_diff->format('%m');
+
+                                        if ($diff_months <= 3) {
+                                            $style = 'color:#FF851B';
+                                        }
+                                    }
+                                ?>
+                                <tr><td class="title" style="<?php echo $style; ?>"><strong>Tanggal Akhir Support</strong></td><td style="<?php echo $style; ?>"><?php echo $end_date_of_support; ?></td></tr>
                             </table>
                         </div>
                         <?php } ?>

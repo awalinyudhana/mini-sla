@@ -24,7 +24,7 @@
                             } ?>
                         <?php
                             // MENU UTAMA adalah list user hanya utk admin
-                            if ($this->ion_auth->in_group('admin')) :
+                            if ($this->ion_auth->in_group(['admin','manager'])) :
                         ?>
                             <p align="right">
                                 <?php echo anchor('users/create', 'Tambah Pengguna Baru', "class='btn btn-success'") ?>
