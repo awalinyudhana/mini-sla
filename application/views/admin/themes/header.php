@@ -17,4 +17,7 @@
     <link rel="stylesheet" href="<?php echo base_url("assets/admin/sb-admin.css"); ?>"/>
     <link rel="stylesheet" href="<?php echo base_url("assets/admin/font-awesome/css/font-awesome.css"); ?>"/>
     <link rel="stylesheet" href="<?php echo base_url("assets/datepicker/bootstrap-datepicker3.min.css"); ?>"/>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 </head>

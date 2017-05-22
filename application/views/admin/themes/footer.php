@@ -36,8 +36,6 @@
 <script type="text/javascript" src="<?php echo base_url("assets/datepicker/bootstrap-datepicker.min.js"); ?>"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url("assets/boq-modal.js"); ?>"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <!-- Core Scripts - Include with every page -->
 <script type="text/javascript">

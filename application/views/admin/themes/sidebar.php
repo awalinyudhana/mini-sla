@@ -85,12 +85,29 @@
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#report-menu"><i class="fa fa-fw fa-file"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="report-menu" class="collapse ul-sub-menu">
-                            <?php if ($this->ion_auth->in_group(['admin', 'technical','sales','boq'])) :?>
+                            <?php if ($this->ion_auth->in_group(['admin', 'manager', 'technical','sales','boq'])) :?>
                                 <li class="li-sub-menu">
                                     <a href="<?php echo base_url('ticket_list/overdue')?>">
                                         <i class="fa fa-ticket fa-fw"></i>Overdue Ticket</a>
                                 </li>
                             <?php endif; ?>
+
+                            <?php if ($this->ion_auth->in_group(['manager', 'technical','sales','boq'])) :?>
+                                <li class="li-sub-menu">
+                                    <a href="<?php echo base_url('report/technical_score')?>">
+                                        <i class="fa fa-dashboard fa-fw"></i>Technical Score</a>
+                                </li>
+                            <?php endif; ?>
+
+                            <li class="li-sub-menu">
+                                <a href="<?php echo base_url('report/ticket_graph')?>">
+                                    <i class="fa fa-ticket fa-fw"></i>Ticket Count Graph</a>
+                            </li>
+
+                            <li class="li-sub-menu">
+                                <a href="<?php echo base_url('report/ticket_graph_by_category')?>">
+                                    <i class="fa fa-ticket fa-fw"></i>Ticket Type Graph</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
