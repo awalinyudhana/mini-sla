@@ -58,15 +58,15 @@ class Users extends CI_Controller
         // validate form input
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
-        $this->form_validation->set_rules('username', 'Nip', 'required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
-        $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
+        $this->form_validation->set_rules('username', 'E-mail', 'required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
+//        $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
         $this->form_validation->set_rules('groups', 'Group', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
         $this->form_validation->set_rules('password_confirm', 'Password Confirm', 'required');
 
         if ($this->form_validation->run() == true) {
             $email = strtolower($this->input->post('email'));
-            $identity = ($identity_column === 'email') ? $email : $this->input->post('username');
+            $identity = $this->input->post('username');
             $password = $this->input->post('password');
 
             $additional_data = array(
@@ -182,7 +182,7 @@ class Users extends CI_Controller
         // validate form input
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
-        $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
+//        $this->form_validation->set_rules('email', 'E-Mail', 'required|valid_email');
 
         if (isset($_POST) && !empty($_POST)) {
             // do we have a valid request?
@@ -199,7 +199,7 @@ class Users extends CI_Controller
 
             if ($this->form_validation->run() === TRUE) {
                 $data = array(
-                    'username' => $user->username,
+                    'username' => $this->input->post('username'),
                     'first_name' => $this->input->post('first_name'),
                     'last_name' => $this->input->post('last_name'),
                     'email' => $this->input->post('email')

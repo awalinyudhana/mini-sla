@@ -182,7 +182,7 @@ class Boq extends CI_Controller
                     < strtotime($this->input->post('start_date_of_support'))
                 )
                 {
-                    $data['populated_form'] = $populated_form;
+//                    $data['populated_form'] = $populated_form;
                     $data['message'] = "Tanggal Akhir Support harus lebih dari Tanggal Awal Support";
                 }
                 else

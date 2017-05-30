@@ -34,10 +34,10 @@
                                 <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nip</th>
+                                    <th>Email</th>
                                     <th>Nama Depan</th>
                                     <th>Nama Belakang</th>
-                                    <th>Email</th>
+<!--                                    <th>Email</th>-->
                                     <th>Groups</th>
 <!--                                    <th>Status</th>-->
 <!--                                    <th colspan="2">Aksi</th>-->
@@ -56,7 +56,7 @@
                                         <td><?php echo htmlspecialchars($user->username, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8'); ?></td>
+<!--                                        <td>--><?php //echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8'); ?><!--</td>-->
                                         <td>
                                             <?php
                                             foreach ($user->groups as $group):

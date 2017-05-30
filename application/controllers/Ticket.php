@@ -139,7 +139,7 @@ class Ticket extends CI_Controller
                 if ($_FILES['document']['size'] > 0 && !empty($_FILES['document']['name']))
                 {
                     $config['upload_path']          = './uploads/tickets';
-                    $config['allowed_types']        = 'gif|jpg|png';
+                    $config['allowed_types']        = 'gif|jpg|jpeg|png';
                     $config['max_size']             = 3062;
                     $config['overwrite']             = false;
 
@@ -192,7 +192,8 @@ class Ticket extends CI_Controller
                         if ($value != 0)
                             $this->model->insert_ticket_users($ticket, $value);
                     }
-                    redirect(base_url('ticket_list/view/'.$ticket));
+//                    redirect(base_url('ticket_list/view/'.$ticket));
+                    redirect(base_url('ticket_list'));
                 } else {
                     $data['message'] = 'Terdapat kesalahan saat menyimpan data';
                 }

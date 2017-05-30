@@ -54,7 +54,8 @@ class Ticket_List extends CI_Controller
             $support_user_id = $this->ion_auth->get_user_id();
         }
 
-        $list = $this->model->get_datatables($type, $support_user_id);
+//        $list = $this->model->get_datatables($type, $support_user_id);
+        $list = $this->model->get_datatables($type);
 
         $data = array();
         $no = $_POST['start'];
@@ -82,9 +83,9 @@ class Ticket_List extends CI_Controller
             $row[] = $item->close_status;
             $row[] = $item->approved_status;
 
-            if ($type == 'hasaction' || $type == 'overdue') {
+//            if ($type == 'hasaction' || $type == 'overdue') {
                 $row[] = $action;
-            }
+//            }
 
             $data[] = $row;
         }

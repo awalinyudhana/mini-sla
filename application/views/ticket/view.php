@@ -16,9 +16,7 @@
 
                 <div class="panel-body">
                     <div class="col-lg-12">
-                        <?php
-                            echo anchor('ticket_list', 'Kembali', "class='btn btn-default pull-right'");
-                        ?>
+                        <a href="#" onClick="history.go(-1); return false;" class='btn btn-default pull-right'>Kembali</a>
 
                         <?php ?>
                     </div>
@@ -64,7 +62,31 @@
                                     </td>
                                     <td><?php echo $ticket_data->request_by; ?></td>
                                 </tr>
-
+                                <tr>
+                                    <td><strong>Dokumen Pendukung</strong>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo base_url('uploads/tickets/' . $ticket_data->document); ?>"
+                                           target="_blank">Lihat
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php
+                                if($ticket_data->close_status == 'Closed' && $ticket_data->report_attachment != NULL)
+                                {
+                                    ?>
+                                    <tr>
+                                        <td><strong>Report Attachment</strong>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo base_url('uploads/tickets/' . $ticket_data->report_attachment); ?>"
+                                               target="_blank">Lihat
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
                                 <?php if ($ticket_data->ticket_by == 'by_device') { ?>
                                     <tr>
                                         <td><strong>Perangkat</strong></td>
@@ -102,6 +124,7 @@
                             $i = 1;
                             foreach ($list_support as $value)
                             {
+                                $support_array [] = $value->id;
                                 ?>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Teknisi <?php echo $i; ?></label>
@@ -142,17 +165,21 @@
                                 </div>
                             <?php
                                 $i++;
+
                             }
 
                             endif;
                             ?>
 
                                 <?php
-                                if ($this->ion_auth->in_group(['technical', 'manager']))
+                                if ($this->ion_auth->in_group(['manager']))
                                 {
-                                    ?>
-                                    <input type="submit" value="Edit Support" class="btn btn-success pull-right">
-                                    <?php
+
+                                    if(in_array($this->ion_auth->get_user_id(), $support_array)) {
+                                        ?>
+                                        <input type="submit" value="Edit Support" class="btn btn-success pull-right">
+                                        <?php
+                                    }
                                 }
                                 ?>
 
@@ -254,11 +281,13 @@
                             </table>
                         </div>
                         <div class="col-lg-12">
-                            <?php 
+                            <?php
                                 if ($this->ion_auth->in_group(['manager'])) {
-                                    echo '<a href="javascript:;" data-href="'.base_url('ticket_list/approve_ticket/'.$ticket_data->ticket_id).'" data-toggle="modal" data-target="#confirm-approve" class="btn btn-success pull-right margin-left-10">Approve Ticket</a>'; 
+                                    if($ticket_data->close_status == 'Closed' && $ticket_data->approved_status == 'Waiting') {
+                                        echo '<a href="javascript:;" data-href="'.base_url('ticket_list/approve_ticket/'.$ticket_data->ticket_id).'" data-toggle="modal" data-target="#confirm-approve" class="btn btn-success pull-right margin-left-10">Approve Ticket</a>';
 
-                                    echo '<button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalDecline">Decline Ticket</button>';
+                                        echo '<button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalDecline">Decline Ticket</button>';
+                                    }
 
                                     echo form_open('ticket_list/decline_ticket', ['class' => 'form-horizontal', 'id' => 'ticket_decline_ticket']);
                             ?>
@@ -290,10 +319,12 @@
                             <?php
                             if ($this->ion_auth->in_group(['technical', 'manager']))
                             {
-                                ?>
-                                <a href="<?php echo base_url('ticket_list/add_progress/'.$ticket_data->ticket_id) ?>"
-                                   class="btn btn-success pull-right"> Tambah Progress</a>
-                                <?php
+                                if(in_array($this->ion_auth->get_user_id(), $support_array) && $ticket_data->close_status == 'Open') {
+                                    ?>
+                                    <a href="<?php echo base_url('ticket_list/add_progress/' . $ticket_data->ticket_id) ?>"
+                                       class="btn btn-success pull-right"> Tambah Progress</a>
+                                    <?php
+                                }
                             }
                             ?>
                         </div>

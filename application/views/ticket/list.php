@@ -78,9 +78,9 @@
                                         <!-- <th>Tech. Status</th> -->
                                         <th>Status Teknisi</th>
                                         <th>Persetujuan Pemimpin</th>
-                                        <?php if (isset($type) && ($type == 'hasaction' || $type == 'overdue')) { ?>
+<!--                                        --><?php //if (isset($type) && ($type == 'hasaction' || $type == 'overdue')) { ?>
                                             <th>Aksi</th>
-                                        <?php } ?>
+<!--                                        --><?php //} ?>
                                     </tr>
                                 </thead>
                                 <tbody>

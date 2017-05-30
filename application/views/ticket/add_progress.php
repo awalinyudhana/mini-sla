@@ -64,6 +64,31 @@
                                     </td>
                                     <td><?php echo $ticket_data->request_by; ?></td>
                                 </tr>
+                                <tr>
+                                    <td><strong>Dokumen Pendukung</strong>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo base_url('uploads/tickets/' . $ticket_data->document); ?>"
+                                           target="_blank">Lihat
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php
+                                if($ticket_data->approved_status == 'Approved' && $ticket_data->report_attachment != NULL)
+                                {
+                                    ?>
+                                    <tr>
+                                        <td><strong>Report Attachment</strong>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo base_url('uploads/tickets/' . $ticket_data->report_attachment); ?>"
+                                               target="_blank">Lihat
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
 
                                 <?php if ($ticket_data->ticket_by == 'by_device') { ?>
                                     <tr>
@@ -120,7 +145,7 @@
                         </div>
                         <div class="col-lg-12">
                             <?php
-                            if ($this->ion_auth->in_group(['manager']))
+                            if ($this->ion_auth->in_group(['technical','manager']))
                             {
                                 ?>
                                 <button type="button" class="btn btn-danger pull-right margin-left-10" data-toggle="modal" data-target="#modalClose">Tutup Ticket</button>

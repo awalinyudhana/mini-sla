@@ -38,10 +38,10 @@
 
                             <?php echo form_open(uri_string(), ['class' => 'form-horizontal']); ?>
                             <div class="form-group">
-                                <label for="username" class="col-sm-2 control-label">Nip:</label>
+                                <label for="username" class="col-sm-2 control-label">E-mail:</label>
                                 <div class="col-sm-6">
                                     <input name="username" value="<?php echo $username['value']; ?>" id="username"
-                                           type="text" class='form-control' disabled>
+                                           type="text" class='form-control'>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -62,13 +62,13 @@
                                            type="text" class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="last_name" class="col-sm-2 control-label">E-mail</label>
-                                <div class="col-sm-6">
-                                    <input name="email" value="<?php echo $email['value']; ?>" id="email" type="text"
-                                           class='form-control'>
-                                </div>
-                            </div>
+<!--                            <div class="form-group">-->
+<!--                                <label for="last_name" class="col-sm-2 control-label">E-mail</label>-->
+<!--                                <div class="col-sm-6">-->
+<!--                                    <input name="email" value="--><?php //echo $email['value']; ?><!--" id="email" type="text"-->
+<!--                                           class='form-control'>-->
+<!--                                </div>-->
+<!--                            </div>-->
 
                             <?php if ($this->ion_auth->is_admin()): ?>
                             <div class="form-group">

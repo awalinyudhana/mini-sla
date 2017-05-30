@@ -53,7 +53,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Kota</label>
                                 <div class="col-sm-6">
-                                    <input name="kota" <?php if ($mode == 'update') echo "value='$kota'" ?>type="text" class='form-control' pattern="^[_A-z]{1,}$" data-required-error="Mohon diisi" data-pattern-error="Mohon diisi hanya dengan huruf" required>
+                                    <input name="kota" <?php if ($mode == 'update') echo "value='$kota'" ?>type="text" class='form-control' data-required-error="Mohon diisi" data-pattern-error="Mohon diisi hanya dengan huruf" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Provinsi</label>
                                 <div class="col-sm-6">
-                                    <input name="provinsi" <?php if ($mode == 'update') echo "value='$provinsi'" ?>type="text" class='form-control' pattern="^[_A-z]{1,}$" data-required-error="Mohon diisi" data-pattern-error="Mohon diisi hanya dengan huruf" required>
+                                    <input name="provinsi" <?php if ($mode == 'update') echo "value='$provinsi'" ?>type="text" class='form-control' data-required-error="Mohon diisi" data-pattern-error="Mohon diisi hanya dengan huruf" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>

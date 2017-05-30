@@ -17,13 +17,16 @@ class TicketListModel extends CI_Model
         $where = '';
         if (isset($type) && $type == 'closed') {
             $where .= "t.close_status='Closed'";
+            $where .= "AND t.approved_status='Approved' ";
         } else if (isset($type) && $type == 'overdue') { 
             $where .= "t.close_status='Closed' AND (datediff(t.close_date,t.tanggal) > s.sla)";
             if ($this->session->userdata('report_start') && $this->session->userdata('report_end')) {
                 $where .= " AND t.tanggal >= '".$this->session->userdata('report_start')."' AND t.tanggal <= '".$this->session->userdata('report_end')."'";
             }
+            $where .= "AND t.approved_status='Approved' ";
         } else {
-            $where .= "t.close_status='Open'";
+            $where .= "t.approved_status='Waiting'";
+//            $where .= "t.close_status='Open'";
         }
 
         if (isset($support_user_id)) {

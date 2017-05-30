@@ -24,7 +24,14 @@
                             } ?>
 
                             <p align="right">
-                                <?php echo anchor('perangkat/create', 'Tambah Perangkat Baru', "class='btn btn-success'") ?>
+
+                                <?php
+                                if ($this->ion_auth->in_group(['admin', 'manager','technical'])){
+                                ?>
+                                    <?php echo anchor('perangkat/create', 'Tambah Perangkat Baru', "class='btn btn-success'") ?>
+                                <?php
+                                }
+                                ?>
                             </p>
                             <table cellpadding=0 cellspacing=10 class="table" id="datatable" data-url="<?php echo $table_url; ?>">
                                 <thead>
@@ -36,7 +43,13 @@
                                         <th>Tipe</th>
                                         <th>Status</th>
                                         <th>Url Tambahan</th>
-                                        <th>Aksi</th>
+                                        <?php
+                                        if ($this->ion_auth->in_group(['admin', 'manager','technical'])){
+                                        ?>
+                                            <th>Aksi</th>
+                                        <?php
+                                        }
+                                        ?>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

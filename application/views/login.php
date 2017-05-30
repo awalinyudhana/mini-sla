@@ -76,7 +76,7 @@
                 <div class="alert alert-warning"><?php echo $message; ?></div>
                 <?php
             } ?>
-            <label for="username">Username:</label>
+            <label for="username">Email:</label>
             <input name="username" type="text" class="form-control">
             <label for="password">Password:</label>
             <input name="password" value="" id="password" type="password" class="form-control">
